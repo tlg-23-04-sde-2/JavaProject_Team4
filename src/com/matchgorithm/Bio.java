@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-class Bio {
+public class Bio {
 
     //STATICS
-    public static List<String> interests = new ArrayList<>();
-    private static final String bioFilePath = "data/data.profile/interests.txt";
+    private static List<String> interests = new ArrayList<>();
+    private static final String bioFilePath = "data/profile/interests.txt";
 
     public static void initializeBioList() {
         try {
