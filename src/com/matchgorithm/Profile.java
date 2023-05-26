@@ -2,7 +2,7 @@ package com.matchgorithm;
 
 import java.util.Random;
 
-class Profile {
+public class Profile {
 
     //Instance Variables
     private Picture pic;
@@ -18,5 +18,11 @@ class Profile {
         Random rand = new Random();
         age = rand.nextInt(68)+ 18;
     }
+
+    @Override
+    public String toString() {
+       return pic.getPic() + name.getName() +bio.getBio() + age;
+    }
+
 
 }
