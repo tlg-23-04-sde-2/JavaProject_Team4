@@ -1,9 +1,9 @@
-package com.matchgorithm.app;
+package com.matchgorithm.model;
 
-import com.matchgorithm.Profile;
-import com.matchgorithm.Bio;
-import com.matchgorithm.Name;
-import com.matchgorithm.Picture;
+import com.matchgorithm.model.Profile;
+import com.matchgorithm.model.Bio;
+import com.matchgorithm.model.Name;
+import com.matchgorithm.model.Picture;
 
 import java.util.Scanner;
 

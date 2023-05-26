@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-class Name {
+public class Name {
 
-    public static List<String> names = new ArrayList<>();
-    private static final String nameFilePath = "data/data.profile/name.txt";
+    private static List<String> names = new ArrayList<>();
+    private static final String nameFilePath = "data/profile/name.txt";
 
     public static void initializeNameList() {
         try {
