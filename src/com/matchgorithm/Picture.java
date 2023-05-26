@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-class Picture {
+public class Picture {
 
-    public static List<String> pictures = new ArrayList<>();
+    private static List<String> pictures = new ArrayList<>();
 
-    private static final String pictureFilePath = "data/data.profile/picture.txt";
+    private static final String pictureFilePath = "data/profile/picture.txt";
 
     public static void initializePicList() {
         try {
