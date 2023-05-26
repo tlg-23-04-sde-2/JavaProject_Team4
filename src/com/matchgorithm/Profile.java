@@ -1,4 +1,4 @@
-package com.matchgorithm.model;
+package com.matchgorithm;
 
 import java.util.Random;
 

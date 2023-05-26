@@ -1,4 +1,4 @@
-package com.matchgorithm.app;
+package com.matchgorithm;
 
 import com.matchgorithm.*;
 
