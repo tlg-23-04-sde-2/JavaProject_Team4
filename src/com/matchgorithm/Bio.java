@@ -29,23 +29,26 @@ public class Bio {
     }
 
     //Instance Variables
-    private String bio;
+    private List<String> bio = new ArrayList<>();
 
 
     //Constructor
     public Bio() {
         Random rand = new Random();
-        String element = interests.get(rand.nextInt(interests.size()));
-        setBio(element);
+        String interest1 = interests.get(rand.nextInt(interests.size()));
+        setBio(interest1);
+        String interest2 = interests.get(rand.nextInt(interests.size()));
+        setBio(interest2);
+        String interest3 = interests.get(rand.nextInt(interests.size()));
+        setBio(interest3);
     }
 
     //Business Method
-    public String getBio() {
-
-        return bio;
+    public List<String> getBio() {
+        return this.bio;
     }
 
     private void setBio(String bio) {
-        this.bio = bio;
+        this.bio.add(0,bio);
     }
 }

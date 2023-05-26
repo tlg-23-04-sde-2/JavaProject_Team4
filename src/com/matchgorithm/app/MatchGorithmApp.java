@@ -1,9 +1,6 @@
 package com.matchgorithm.app;
 
-import com.matchgorithm.Profile;
-import com.matchgorithm.Bio;
-import com.matchgorithm.Name;
-import com.matchgorithm.Picture;
+import com.matchgorithm.*;
 
 import java.util.Scanner;
 
@@ -15,6 +12,7 @@ public class MatchGorithmApp {
         Bio.initializeBioList();
         Name.initializeNameList();
         Picture.initializePicList();
+        Career.initializeCareerList();
         showProfile();
 
     }
@@ -22,6 +20,8 @@ public class MatchGorithmApp {
     private void showProfile() {
         boolean runLoop = true;
         while (runLoop) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
             Profile profile = new Profile();
             System.out.println(profile);
             userInput result = promptForSwipe();
@@ -35,6 +35,9 @@ public class MatchGorithmApp {
                 case NEXT_PIC:
                     break;
                 case PREVIOUS_PIC:
+                    break;
+                case EXIT:
+                    runLoop = false;
                     break;
             }
         }
@@ -69,13 +72,17 @@ public class MatchGorithmApp {
                     result = userInput.PREVIOUS_PIC;
                     validInput = true;
                     break;
+                case "EXIT":
+                    result = userInput.EXIT;
+                    validInput = true;
+                    break;
             }
         }
         return result;
     }
 
     public static enum userInput {
-        SWIPE_LEFT, SWIPE_RIGHT, SUPER_LIKE, NEXT_PIC, PREVIOUS_PIC
+        SWIPE_LEFT, SWIPE_RIGHT, SUPER_LIKE, NEXT_PIC, PREVIOUS_PIC, EXIT
     }
 
 }
