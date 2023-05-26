@@ -1,6 +1,6 @@
 package com.matchgorithm.client;
 
-import com.matchgorithm.model.MatchGorithmApp;
+import com.matchgorithm.app.MatchGorithmApp;
 
 class main {
     public static void main(String[] args) {
