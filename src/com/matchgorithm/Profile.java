@@ -23,9 +23,13 @@ public class Profile {
         distance = rand.nextInt(51);
     }
 
+    public Name getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
-       return pic.getPic() + "\n \n" +
+       return "\f" + pic.getPic() + "\n" +
                name.getName() +", " + age + "\n" +
                career.getJob() + " @ " + career.getCompany() + "\n" +
                distance + " miles away" + "\n \n" +
