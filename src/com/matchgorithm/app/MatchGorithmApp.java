@@ -2,11 +2,14 @@ package com.matchgorithm.app;
 
 import com.matchgorithm.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class MatchGorithmApp {
     private final Scanner scanner = new Scanner(System.in); //read inputs from console
+    List<Profile> matches = new ArrayList<Profile>();
 
     public void execute() {
         Bio.initializeBioList();
@@ -79,6 +82,21 @@ public class MatchGorithmApp {
             }
         }
         return result;
+    }
+
+    private void printMainMenu() {
+        /*
+         * Show choices of swipe interface and chat interface
+         */
+
+        // At the bottom of the screen, present options, such as: Swipe (S) | Chat(C)
+        System.out.println("Swipe(S) | Chat(C)");
+
+    }
+
+    private void matchWithBot(Profile profile) {
+        // can implement Random to simulate random chances of matching
+        matches.add(profile);
     }
 
     public static enum userInput {

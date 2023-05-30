@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class Profile {
 
+    private static int id = 0;
+
     //Instance Variables
     private Picture pic;
     private Name name;
@@ -21,6 +23,37 @@ public class Profile {
         Random rand = new Random();
         age = rand.nextInt(68)+ 18;
         distance = rand.nextInt(51);
+
+        // create unique ID for each instance
+        id++;
+    }
+
+    public static int getId() {
+        return id;
+    }
+
+    public Picture getPic() {
+        return pic;
+    }
+
+    public Name getName() {
+        return name;
+    }
+
+    public Bio getBio() {
+        return bio;
+    }
+
+    public Career getCareer() {
+        return career;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getDistance() {
+        return distance;
     }
 
     @Override
