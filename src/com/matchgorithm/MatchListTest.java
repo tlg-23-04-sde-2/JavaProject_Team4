@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class ChatTest{
+class MatchListTest {
     public static void main(String[] args) {
 
         Bio.initializeBioList();
@@ -23,8 +23,7 @@ class ChatTest{
         matchList.showMatchList();
 
         Scanner in = new Scanner(System.in);
-
-        // TODO: Currently selectMatch is selecting the next page profile, need to fix it.
+        
         boolean hasSelectedMatch = false;
         while (!hasSelectedMatch) {
             String input = in.nextLine();
@@ -33,8 +32,7 @@ class ChatTest{
                 choice = Integer.parseInt(input);
                 if (0 <= choice && choice <= 9) {
                     hasSelectedMatch = true;
-                    int selectedMatch = choice + matchList.getCurrentPage() * MatchList.matchesPerPage;
-                    System.out.println(matchList.selectedMatch(selectedMatch));
+                    System.out.println(matchList.selectedMatch(choice));
                 }
             }
             catch (IllegalArgumentException e) {

@@ -28,6 +28,9 @@ class MatchList {
         this.matches = matches;
     }
 
+    // business methods
+
+    // view method: show user options in the "Matches" interface
     void showChatInterfaceOptions() {
         Ansi ansi = new Ansi();
         ansi.fgGreen();
@@ -40,6 +43,7 @@ class MatchList {
         AnsiConsole.out().print(ansi.reset());
     }
 
+    // view method: show the matches on the current page
     void showMatchList() {
         int matchesShown =
                 currentPage == matches.size() / matchesPerPage ?
@@ -54,6 +58,7 @@ class MatchList {
         showChatInterfaceOptions();
     }
 
+    // model method: allow user to browse through pages of the MatchList
     void flipPage(String input) {
         Ansi ansi = new Ansi();
 
@@ -81,10 +86,11 @@ class MatchList {
         }
     }
 
+    // model method: returns the selected profile
     Profile selectedMatch(int choice) {
-        Profile selectedProfile = matches.get(choice + currentPage * matchesPerPage);
+        int indexOfChoice = choice + getCurrentPage() * matchesPerPage;
 
-        return selectedProfile;
+        return matches.get(indexOfChoice);
     }
 
     // TODO: Need to move it to Chat Interface
