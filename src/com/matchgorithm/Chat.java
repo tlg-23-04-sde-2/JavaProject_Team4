@@ -1,5 +1,8 @@
 package com.matchgorithm;
 
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +16,7 @@ class Chat {
      */
 
     // Constant field
-    private static final int matchesPerPage = 10;
+    public static final int matchesPerPage = 10;
 
     // Fields & properties
     private List<Profile> matches = new ArrayList<Profile>();
@@ -25,6 +28,18 @@ class Chat {
         this.matches = matches;
     }
 
+    void showChatInterfaceOptions() {
+        Ansi ansi = new Ansi();
+        ansi.fgGreen();
+        ansi.a("-------------------------------------\n");
+        ansi.a("Enter id number to view profile (0-9)\n");
+        ansi.a("               or\n");
+        ansi.a("   Previous page(P) | Next Page(N)\n");
+        ansi.a("-------------------------------------\n");
+        ansi.a("              Enter: ");
+        AnsiConsole.out().print(ansi.reset());
+    }
+
     void showMatchList() {
         int matchesShown =
                 currentPage == matches.size() / matchesPerPage ?
@@ -32,29 +47,41 @@ class Chat {
 
         for (int i = 0; i < matchesShown; i++) {
             Profile profile = matches.get(i + currentPage * 10);
-            System.out.printf("%s. %s: %s, %s, %s",
-                    profile.getId(), profile.getName(), profile.getAge(),
+            System.out.printf("%s. %s: Age %s, %s, %s miles\n\n",
+                    i, profile.getName(), profile.getAge(),
                     profile.getCareer(), profile.getDistance());
         }
+        showChatInterfaceOptions();
     }
 
     void flipPage(String input) {
+        Ansi ansi = new Ansi();
+
         switch (input) {
-            case "previous":
+            case "P":   // Previous page
                 if (currentPage > 0) {
                     currentPage--;
-                    break;
+                    showMatchList();
                 }
-            case "next":
+                else {
+                    AnsiConsole.out().println(ansi.fgRed().bold().a("\nThis is the first page.\n").reset());
+                    showChatInterfaceOptions();
+                }
+                break;
+            case "N":   // Next page
                 if ((currentPage + 1) * matchesPerPage < matches.size()) {
                     currentPage++;
-                    break;
+                    showMatchList();
                 }
+                else {
+                    System.out.println(ansi.fgRed().bold().a("\nThis is the last page.\n").reset());
+                    showChatInterfaceOptions();
+                }
+                break;
         }
-        showMatchList();
     }
 
-    Profile selectMatch(int choice) {
+    Profile selectedMatch(int choice) {
         Profile selectedProfile = matches.get(choice + currentPage * matchesPerPage);
 
         return selectedProfile;
@@ -63,4 +90,8 @@ class Chat {
     void chat() {
     }
 
+    // accessor method
+    public int getCurrentPage() {
+        return currentPage;
+    }
 }
