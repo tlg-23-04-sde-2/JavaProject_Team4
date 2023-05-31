@@ -20,7 +20,7 @@ public class MatchListApp {
     }
 
     // business method
-    public void execute() {
+    public void execute(List<Profile> placeHolder) {
         matchListAppOperation(userInterfaceStatus, matches);
     }
 

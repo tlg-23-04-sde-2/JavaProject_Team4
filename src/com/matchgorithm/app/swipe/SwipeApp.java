@@ -35,13 +35,13 @@ public class SwipeApp {
                 case SWIPE_RIGHT:
                     int chanceRight = rand.nextInt(99);
                     if (chanceRight >= 50){
-                        matches.add(0,profile);
+                        matches.add(profile);
                     }
                     break;
                 case SUPER_LIKE:
                     int chanceSuper = rand.nextInt(99);
                     if (chanceSuper >= 25) {
-                        matches.add(0, profile);
+                        matches.add(profile);
                     }
                     break;
                 case EXIT:
