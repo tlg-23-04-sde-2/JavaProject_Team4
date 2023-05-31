@@ -5,6 +5,7 @@ import org.fusesource.jansi.AnsiConsole;
 import org.w3c.dom.ls.LSOutput;
 
 import java.util.List;
+import java.util.Locale;
 
 class MatchList {
     /*
@@ -72,7 +73,7 @@ class MatchList {
     void flipPage(String input) {
         Ansi ansi = new Ansi();
 
-        switch (input) {
+        switch (input.toUpperCase()) {
             case "P":   // Previous page
                 if (currentPage > 0) {
                     currentPage--;
@@ -96,16 +97,6 @@ class MatchList {
             default:
                 break;
         }
-    }
-
-    // model method: place-holder for exiting to main menu
-    UserInterfaceStatus returnToMainMenu(String input, UserInterfaceStatus userInterfaceStatus) {
-        if ("M".equals(input)) {
-            // TODO: complete main menu user interface
-            System.out.println("Return to main menu.\n");
-            userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
-        }
-        return userInterfaceStatus;
     }
 
     // model method: returns the selected profile

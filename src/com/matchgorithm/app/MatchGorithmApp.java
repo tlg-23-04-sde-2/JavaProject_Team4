@@ -1,7 +1,11 @@
 package com.matchgorithm.app;
 
 import com.matchgorithm.*;
+import org.fusesource.jansi.Ansi;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 
@@ -44,7 +48,8 @@ public class MatchGorithmApp {
                     userInterfaceStatus = showProfile(userInterfaceStatus);
                     break;
                 case MATCH_LIST:
-                    userInterfaceStatus = matchListApp.execute();
+                    matchListApp.execute();
+                    userInterfaceStatus = matchListApp.updateUserInterfaceStatus();
                     break;
                 case MESSENGER:
                     //messengerAppOperation();
@@ -89,25 +94,25 @@ public class MatchGorithmApp {
 
         while (!validInput) {
             System.out.println("Welcome to MatchGorithm!");
-            System.out.print("Please choose one of the following: " + userInput.PROFILES.getInput() + ", "
-                    + userInput.MATCH_LIST.getInput() + ", "
-                    + userInput.MESSAGES.getInput() + " or " + userInput.EXIT.getInput() + ".");
+            System.out.print("Please choose one of the following: " + userInput.PROFILES.getInput() + "(S), "
+                    + userInput.MATCH_LIST.getInput() + "(M), "
+                    + userInput.MESSAGES.getInput() + "(C) or " + userInput.EXIT.getInput() + "(X).\nEnter: ");
 
             String input = scanner.nextLine().trim().toUpperCase();
             switch (input) {
-                case "PROFILES":
+                case "S":
                     userInterfaceStatus = UserInterfaceStatus.SWIPE;
                     validInput = true;
                     break;
-                case "MATCH LIST":
+                case "M":
                     userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
                     validInput = true;
                     break;
-                case "MESSAGES":
+                case "C":
                     userInterfaceStatus = UserInterfaceStatus.MESSENGER;
                     validInput = true;
                     break;
-                case "EXIT":
+                case "X":
                     validInput = true;
                     userInterfaceStatus = UserInterfaceStatus.EXIT;
                     break;
@@ -117,40 +122,10 @@ public class MatchGorithmApp {
     }
 
     //------------------------------------------------------------
-    // PROFILE SCREEN METHODS
+    // SWIPE PROFILES SCREEN METHODS
     //------------------------------------------------------------
 
-    // model method: SwipeApp, get matches with random possibilities as you swipe right
-    private void showProfile() {
-        boolean runLoop = true;
-        while (runLoop) {
-            Profile profile = new Profile();
-            System.out.println(profile);
-            userInput result = promptForSwipe();
-            switch (result){
-                case SWIPE_LEFT:
-                    break;
-                case SWIPE_RIGHT:
-                    int chanceRight = rand.nextInt(99);
-                    if (chanceRight >= 50){
-                        matches.add(0,profile);
-                        // TODO: print a message: You are matched!
-                    }
-                    break;
-                case SUPER_LIKE:
-                    int chanceSuper = rand.nextInt(99);
-                    if (chanceSuper >= 25) {
-                        matches.add(0, profile);
-                        // Same as above
-                    }
-                    break;
-                case EXIT:
-                    runLoop = false;
-                    break;
-            }
-        }
-    }
-
+    // model method: take action to bot profiles according to user actions
     private UserInterfaceStatus showProfile(UserInterfaceStatus userInterfaceStatus) {
         // Generate new bot profile to present to user
         Profile profile = new Profile();
@@ -164,43 +139,65 @@ public class MatchGorithmApp {
                 int chanceRight = rand.nextInt(99);
                 if (chanceRight >= 50){
                     matches.add(0,profile);
-                    // TODO: print a message: You are matched!
+                    printMatchedMessage();
                 }
                 break;
             case SUPER_LIKE:
                 int chanceSuper = rand.nextInt(99);
                 if (chanceSuper >= 25) {
                     matches.add(0, profile);
-                    // Same as above
+                    printMatchedMessage();
                 }
                 break;
             case EXIT:
                 userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
                 break;
+            default:
+                break;
         }
         return userInterfaceStatus;
     }
 
-    // model method: SwipeApp, takeSs in user actions (LEFT, RIGHT, SUPER LIKE, EXIT)
+    private void printMatchedMessage(){
+
+        String content = "";
+        try {
+            Path filePath = Path.of("data/prompt_messages/matched_prompt_message.txt");
+            content = Files.readString(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+        Ansi ansi = new Ansi();
+        System.out.println(ansi.fgBrightMagenta().a(content).reset());
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    // controller method: SwipeApp, takes in user actions (LEFT, RIGHT, SUPER LIKE, EXIT)
     private userInput promptForSwipe() {
         userInput result = null;
 
-        System.out.print("Please enter either " + userInput.SWIPE_LEFT.getInput()+ ", " +
-                userInput.SWIPE_RIGHT.getInput() + ", " + userInput.SUPER_LIKE.getInput() + " or "
-                + userInput.EXIT.getInput() + ": ");
+        System.out.print("Please enter either " + userInput.SWIPE_LEFT.getInput()+ "(L), " +
+                userInput.SWIPE_RIGHT.getInput() + "(R), " + userInput.SUPER_LIKE.getInput() + "(S) or "
+                + userInput.EXIT.getInput() + "(X): ");
 
         String input = scanner.nextLine().trim().toUpperCase();
         switch(input) {
-            case "LEFT":
+            case "L":
                 result = userInput.SWIPE_LEFT;
                 break;
-            case "RIGHT":
+            case "R":
                 result = userInput.SWIPE_RIGHT;
                 break;
-            case "SUPER LIKE":
+            case "S":
                 result = userInput.SUPER_LIKE;
                 break;
-            case "EXIT":
+            case "X":
                 result = userInput.EXIT;
                 break;
         }

@@ -8,7 +8,7 @@ public class MatchListApp {
 
     private List<Profile> matches = new ArrayList<>();
     private MatchList matchList;
-    UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
+    private UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
 
     // constructor
     public MatchListApp(List<Profile> matches) {
@@ -17,19 +17,19 @@ public class MatchListApp {
     }
 
     // business method
-    public UserInterfaceStatus execute() {
-        return matchListAppOperation(userInterfaceStatus, matches);
+    public void execute() {
+        matchListAppOperation(matches);
     }
 
-    private UserInterfaceStatus matchListAppOperation
-            (UserInterfaceStatus userInterfaceStatus, List<Profile> matches) {
+    private void matchListAppOperation
+            (List<Profile> matches) {
 
         matchList.showMatchList();
 
         Scanner in = new Scanner(System.in);
 
         while (userInterfaceStatus == UserInterfaceStatus.MATCH_LIST) {
-            String input = in.nextLine();
+            String input = in.nextLine().toUpperCase();
 
             // TODO: complete messenger interface
             // should go to messenger interface
@@ -52,16 +52,21 @@ public class MatchListApp {
             catch (IllegalArgumentException e) {
             }
 
-            userInterfaceStatus = matchList.returnToMainMenu(input, userInterfaceStatus);
+            if ("M".equals(input)) {
+                userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
+            }
             matchList.flipPage(input);
         }
-        return userInterfaceStatus;
     }
 
     // accessor method
 
     public void setMatches(List<Profile> matches) {
         this.matches = matches;
+    }
+
+    public UserInterfaceStatus updateUserInterfaceStatus() {
+        return this.userInterfaceStatus;
     }
 }
 
