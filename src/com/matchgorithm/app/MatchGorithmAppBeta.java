@@ -25,7 +25,7 @@ class MatchGorithmAppBeta {
         MatchListApp matchListApp = new MatchListApp(matches);
 
         boolean isRunning = true;
-        while (userInterfaceStatus == UserInterfaceStatus.MATCH_LIST) {
+        while (userInterfaceStatus != UserInterfaceStatus.EXIT) {
             switch (userInterfaceStatus) {
                 case MAIN_MENU:
                     //mainMenuOperation();

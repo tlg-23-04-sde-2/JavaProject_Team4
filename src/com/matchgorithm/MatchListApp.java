@@ -11,23 +11,18 @@ public class MatchListApp {
     UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
 
     // constructor
-
-    public MatchListApp() {
-    }
-
     public MatchListApp(List<Profile> matches) {
         this.matches = matches;
         this.matchList = new MatchList(matches);
     }
 
     // business method
-    public void execute() {
-        matchListAppOperation(userInterfaceStatus, matches);
+    public UserInterfaceStatus execute() {
+        return matchListAppOperation(userInterfaceStatus, matches);
     }
 
-    public UserInterfaceStatus matchListAppOperation
+    private UserInterfaceStatus matchListAppOperation
             (UserInterfaceStatus userInterfaceStatus, List<Profile> matches) {
-
 
         matchList.showMatchList();
 
@@ -67,10 +62,6 @@ public class MatchListApp {
 
     public void setMatches(List<Profile> matches) {
         this.matches = matches;
-    }
-
-    public void setUserInterfaceStatus(UserInterfaceStatus userInterfaceStatus) {
-        this.userInterfaceStatus = userInterfaceStatus;
     }
 }
 

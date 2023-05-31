@@ -33,7 +33,7 @@ public class MatchGorithmApp {
 
         UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
 
-        MatchListApp matchListApp = new MatchListApp();
+        MatchListApp matchListApp = new MatchListApp(matches);
 
         while (userInterfaceStatus != UserInterfaceStatus.EXIT) {
             switch (userInterfaceStatus) {
@@ -41,11 +41,10 @@ public class MatchGorithmApp {
                     userInterfaceStatus = promptForMenu(userInterfaceStatus);
                     break;
                 case SWIPE:
-                    showProfile();
+                    userInterfaceStatus = showProfile(userInterfaceStatus);
                     break;
                 case MATCH_LIST:
-                    matchListApp.setMatches(matches);
-                    matchListApp.execute();
+                    userInterfaceStatus = matchListApp.execute();
                     break;
                 case MESSENGER:
                     //messengerAppOperation();
@@ -152,35 +151,58 @@ public class MatchGorithmApp {
         }
     }
 
+    private UserInterfaceStatus showProfile(UserInterfaceStatus userInterfaceStatus) {
+        // Generate new bot profile to present to user
+        Profile profile = new Profile();
+        System.out.println(profile);
+
+        userInput result = promptForSwipe();
+        switch (result){
+            case SWIPE_LEFT:
+                break;
+            case SWIPE_RIGHT:
+                int chanceRight = rand.nextInt(99);
+                if (chanceRight >= 50){
+                    matches.add(0,profile);
+                    // TODO: print a message: You are matched!
+                }
+                break;
+            case SUPER_LIKE:
+                int chanceSuper = rand.nextInt(99);
+                if (chanceSuper >= 25) {
+                    matches.add(0, profile);
+                    // Same as above
+                }
+                break;
+            case EXIT:
+                userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
+                break;
+        }
+        return userInterfaceStatus;
+    }
+
     // model method: SwipeApp, takeSs in user actions (LEFT, RIGHT, SUPER LIKE, EXIT)
     private userInput promptForSwipe() {
         userInput result = null;
-        boolean validInput = false;
-        while (!validInput) {
-            System.out.print("Please enter either " + userInput.SWIPE_LEFT.getInput()+ ", " +
-                    userInput.SWIPE_RIGHT.getInput() + ", " + userInput.SUPER_LIKE.getInput() + " or "
-                    + userInput.EXIT.getInput() + ": ");
-            String input = scanner.nextLine().trim().toUpperCase();
-            switch(input) {
-                case "LEFT":
-                    result = userInput.SWIPE_LEFT;
-                    validInput = true;
-                    break;
 
-                    // This is where you can get matches, use promptForMatches here
-                case "RIGHT":
-                    result = userInput.SWIPE_RIGHT;
-                    validInput = true;
-                    break;
-                case "SUPER LIKE":
-                    result = userInput.SUPER_LIKE;
-                    validInput = true;
-                    break;
-                case "EXIT":
-                    result = userInput.EXIT;
-                    validInput = true;
-                    break;
-            }
+        System.out.print("Please enter either " + userInput.SWIPE_LEFT.getInput()+ ", " +
+                userInput.SWIPE_RIGHT.getInput() + ", " + userInput.SUPER_LIKE.getInput() + " or "
+                + userInput.EXIT.getInput() + ": ");
+
+        String input = scanner.nextLine().trim().toUpperCase();
+        switch(input) {
+            case "LEFT":
+                result = userInput.SWIPE_LEFT;
+                break;
+            case "RIGHT":
+                result = userInput.SWIPE_RIGHT;
+                break;
+            case "SUPER LIKE":
+                result = userInput.SUPER_LIKE;
+                break;
+            case "EXIT":
+                result = userInput.EXIT;
+                break;
         }
         return result;
     }
@@ -191,7 +213,7 @@ public class MatchGorithmApp {
 
     /*
      * TODO: check later
-    
+
     private void showMessages() {
         boolean runLoop = true;
         while (runLoop) {
