@@ -33,14 +33,14 @@ class MatchList {
     // view method: show user options in the "Matches" interface
     void showChatInterfaceOptions() {
         Ansi ansi = new Ansi();
-        ansi.fgGreen();
-        ansi.a("-------------------------------------\n");
-        ansi.a("Enter id number to view profile (0-9)\n");
-        ansi.a("               or\n");
-        ansi.a("   Previous page(P) | Next Page(N)\n");
-        ansi.a("-------------------------------------\n");
-        ansi.a("              Enter: ");
-        AnsiConsole.out().print(ansi.reset());
+        String options = "               OPTIONS\n "
+                       + "-------------------------------------\n"
+                       + "Enter id number to view profile (0-9)\n"
+                       + "   Previous page(P) | Next Page(N)\n"
+                       + "            Main Menu(M)\n"
+                       + "-------------------------------------\n"
+                       + "                Enter: ";
+        System.out.print(ansi.fgGreen().bold().a(options).reset());
     }
 
     // view method: show the matches on the current page
@@ -69,7 +69,7 @@ class MatchList {
                     showMatchList();
                 }
                 else {
-                    AnsiConsole.out().println(ansi.fgRed().bold().a("\nThis is the first page.\n").reset());
+                    System.out.println(ansi.fgRed().bold().a("\nThis is the first page.\n").reset());
                     showChatInterfaceOptions();
                 }
                 break;
@@ -83,13 +83,25 @@ class MatchList {
                     showChatInterfaceOptions();
                 }
                 break;
+            default:
+                break;
         }
+    }
+
+    // model method: place-holder for exiting to main menu
+    UserInterfaceStatus returnToMainMenu(String input, UserInterfaceStatus userInterfaceStatus) {
+        if ("M".equals(input)) {
+            // TODO: complete main menu user interface
+            System.out.println("Return to main menu.");
+            userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
+        }
+        return userInterfaceStatus;
     }
 
     // model method: returns the selected profile
     Profile selectedMatch(int choice) {
-        int indexOfChoice = choice + getCurrentPage() * matchesPerPage;
 
+        int indexOfChoice = choice + getCurrentPage() * matchesPerPage;
         return matches.get(indexOfChoice);
     }
 
