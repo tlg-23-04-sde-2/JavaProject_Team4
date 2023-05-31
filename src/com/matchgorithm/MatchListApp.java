@@ -6,19 +6,26 @@ import java.util.Scanner;
 
 public class MatchListApp {
 
+    private List<Profile> matches = new ArrayList<>();
+    private MatchList matchList;
+    UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
+
     // constructor
-    public MatchListApp() {
+    public MatchListApp(List<Profile> matches, UserInterfaceStatus userInterfaceStatus) {
+        this.matches = matches;
+        this.matchList = new MatchList(matches);
+        this.userInterfaceStatus = userInterfaceStatus;
     }
 
     // business method
-    public void execute(List<Profile> matches, UserInterfaceStatus userInterfaceStatus) {
+    public void execute() {
         matchListAppOperation(userInterfaceStatus, matches);
     }
 
     public UserInterfaceStatus matchListAppOperation
             (UserInterfaceStatus userInterfaceStatus, List<Profile> matches) {
 
-        MatchList matchList = new MatchList(matches);
+
         matchList.showMatchList();
 
         Scanner in = new Scanner(System.in);

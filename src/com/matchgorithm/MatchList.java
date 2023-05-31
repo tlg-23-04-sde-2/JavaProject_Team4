@@ -19,7 +19,7 @@ class MatchList {
     public static final int matchesPerPage = 10;
 
     // Fields & properties
-    private List<Profile> matches = new ArrayList<Profile>();
+    private List<Profile> matches;
 
     private int currentPage = 0;    // show 10 matches per page
 
@@ -92,7 +92,7 @@ class MatchList {
     UserInterfaceStatus returnToMainMenu(String input, UserInterfaceStatus userInterfaceStatus) {
         if ("M".equals(input)) {
             // TODO: complete main menu user interface
-            System.out.println("Return to main menu.");
+            System.out.println("Return to main menu.\n");
             userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
         }
         return userInterfaceStatus;

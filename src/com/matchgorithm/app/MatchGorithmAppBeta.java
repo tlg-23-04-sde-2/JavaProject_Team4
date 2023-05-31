@@ -22,7 +22,7 @@ class MatchGorithmAppBeta {
             matches.add(new Profile());
         }
 
-        MatchListApp matchListApp = new MatchListApp();
+        MatchListApp matchListApp = new MatchListApp(matches, userInterfaceStatus);
 
         boolean isRunning = true;
         while (isRunning) {
@@ -32,7 +32,7 @@ class MatchGorithmAppBeta {
                 case SWIPE:
                     //swipeAppOperation();
                 case MATCH_LIST:
-                    matchListApp.execute(matches, userInterfaceStatus);
+                    matchListApp.execute();
                 case MESSENGER:
                     //messengerAppOperation();
             }
