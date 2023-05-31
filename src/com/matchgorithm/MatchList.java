@@ -2,8 +2,8 @@ package com.matchgorithm;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
+import org.w3c.dom.ls.LSOutput;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class MatchList {
@@ -31,7 +31,7 @@ class MatchList {
     // business methods
 
     // view method: show user options in the "Matches" interface
-    void showChatInterfaceOptions() {
+    void showMatchListInterfaceOptions() {
         Ansi ansi = new Ansi();
         String options = "               OPTIONS\n "
                        + "-------------------------------------\n"
@@ -49,13 +49,23 @@ class MatchList {
                 currentPage == matches.size() / matchesPerPage ?
                         matches.size() % matchesPerPage : 10;
 
+        Ansi ansi = new Ansi();
         for (int i = 0; i < matchesShown; i++) {
             Profile profile = matches.get(i + currentPage * 10);
+
             System.out.printf("%s. %s: Age %s, %s, %s miles\n\n",
                     i, profile.getName(), profile.getAge(),
                     profile.getCareer(), profile.getDistance());
+
+            // Color highlight
+//            System.out.print(ansi.fgGreen().a(String.valueOf(i)).reset());
+//            System.out.print(". ");
+//            AnsiConsole.out().print(ansi.fgBrightCyan().a(profile.getName()).reset());
+//            System.out.println("： Age "+ profile.getAge() + ", "
+//                    + profile.getCareer() + ", "
+//                    + profile.getDistance() + " mile(s)\n");
         }
-        showChatInterfaceOptions();
+        showMatchListInterfaceOptions();
     }
 
     // model method: allow user to browse through pages of the MatchList
@@ -70,7 +80,7 @@ class MatchList {
                 }
                 else {
                     System.out.println(ansi.fgRed().bold().a("\nThis is the first page.\n").reset());
-                    showChatInterfaceOptions();
+                    showMatchListInterfaceOptions();
                 }
                 break;
             case "N":   // Next page
@@ -80,7 +90,7 @@ class MatchList {
                 }
                 else {
                     System.out.println(ansi.fgRed().bold().a("\nThis is the last page.\n").reset());
-                    showChatInterfaceOptions();
+                    showMatchListInterfaceOptions();
                 }
                 break;
             default:
@@ -113,4 +123,6 @@ class MatchList {
     public int getCurrentPage() {
         return currentPage;
     }
+
+
 }

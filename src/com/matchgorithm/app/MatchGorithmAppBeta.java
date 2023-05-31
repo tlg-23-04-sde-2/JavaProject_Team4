@@ -22,10 +22,10 @@ class MatchGorithmAppBeta {
             matches.add(new Profile());
         }
 
-        MatchListApp matchListApp = new MatchListApp(matches, userInterfaceStatus);
+        MatchListApp matchListApp = new MatchListApp(matches);
 
         boolean isRunning = true;
-        while (isRunning) {
+        while (userInterfaceStatus == UserInterfaceStatus.MATCH_LIST) {
             switch (userInterfaceStatus) {
                 case MAIN_MENU:
                     //mainMenuOperation();

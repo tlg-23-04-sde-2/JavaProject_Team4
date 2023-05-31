@@ -56,10 +56,6 @@ public class Profile {
         return distance;
     }
 
-    public Name getName() {
-        return name;
-    }
-
     @Override
     public String toString() {
        return "\f" + pic.getPic() + "\n" +

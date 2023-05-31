@@ -11,10 +11,13 @@ public class MatchListApp {
     UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
 
     // constructor
-    public MatchListApp(List<Profile> matches, UserInterfaceStatus userInterfaceStatus) {
+
+    public MatchListApp() {
+    }
+
+    public MatchListApp(List<Profile> matches) {
         this.matches = matches;
         this.matchList = new MatchList(matches);
-        this.userInterfaceStatus = userInterfaceStatus;
     }
 
     // business method
@@ -58,6 +61,16 @@ public class MatchListApp {
             matchList.flipPage(input);
         }
         return userInterfaceStatus;
+    }
+
+    // accessor method
+
+    public void setMatches(List<Profile> matches) {
+        this.matches = matches;
+    }
+
+    public void setUserInterfaceStatus(UserInterfaceStatus userInterfaceStatus) {
+        this.userInterfaceStatus = userInterfaceStatus;
     }
 }
 

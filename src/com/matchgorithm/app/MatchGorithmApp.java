@@ -2,79 +2,126 @@ package com.matchgorithm.app;
 
 import com.matchgorithm.*;
 
-import java.util.Locale;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class MatchGorithmApp {
     private final Scanner scanner = new Scanner(System.in); //read inputs from console
-  
-    private Messenger messenger = new Messenger();
+
+    private List<Profile> matches = new ArrayList<>();
+
     private Random rand = new Random();
 
+    // constructor
     public MatchGorithmApp() {
     }
+
+    // TODO: previous execute function, may replace later
+//    public void execute() {
+//        Bio.initializeBioList();
+//        Name.initializeNameList();
+//        Picture.initializePicList();
+//        Career.initializeCareerList();
+//        promptForMenu();
+//    }
 
     public void execute() {
         Bio.initializeBioList();
         Name.initializeNameList();
         Picture.initializePicList();
         Career.initializeCareerList();
-        showHomeScreen();
+
+        UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
+
+        MatchListApp matchListApp = new MatchListApp();
+
+        while (userInterfaceStatus != UserInterfaceStatus.EXIT) {
+            switch (userInterfaceStatus) {
+                case MAIN_MENU:
+                    userInterfaceStatus = promptForMenu(userInterfaceStatus);
+                    break;
+                case SWIPE:
+                    showProfile();
+                    break;
+                case MATCH_LIST:
+                    matchListApp.setMatches(matches);
+                    matchListApp.execute();
+                    break;
+                case MESSENGER:
+                    //messengerAppOperation();
+                    break;
+            }
+        }
     }
 
     //------------------------------------------------------------
     // HOME SCREEN METHODS
     //------------------------------------------------------------
-    private void showHomeScreen() {
-        boolean runLoop = true;
-        while (runLoop) {
-            System.out.println("Welcome to MatchGorithm!");
-            userInput result = promptForMenu();
-            switch (result){
-                case PROFILES:
-                    showProfile();
-                    break;
-                case MESSAGES:
-                    showMessages();
-                    break;
-                case EXIT:
-                    runLoop = false;
-                    break;
-            }
-        }
-    }
 
-    private userInput promptForMenu() {
-        userInput result = null;
+    // TODO: may delete if not needed
+//    private UserInterfaceStatus showHomeScreen(UserInterfaceStatus userInterfaceStatus) {
+//        boolean runLoop = true;
+//        while (runLoop) {
+//            System.out.println("Welcome to MatchGorithm!");
+//
+//            userInput input = promptForMenu();
+//            switch (input){
+//                case PROFILES:
+//                    userInterfaceStatus = UserInterfaceStatus.SWIPE;
+//                    showProfile();
+//                    break;
+//                case MESSAGES:
+//                    userInterfaceStatus = UserInterfaceStatus.MESSENGER;
+//                    showMessages();
+//                    break;
+//                case MATCHLIST:
+//                    userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
+//                case EXIT:
+//                    runLoop = false;
+//                    break;
+//            }
+//        }
+//
+//        return userInterfaceStatus;
+//    }
+
+    private UserInterfaceStatus promptForMenu(UserInterfaceStatus userInterfaceStatus) {
         boolean validInput = false;
+
         while (!validInput) {
-            System.out.print("Please choose one of the following: " + userInput.PROFILES.getInput() + ", " +
-                    userInput.MESSAGES.getInput() + " or " + userInput.EXIT.getInput() + ".");
+            System.out.println("Welcome to MatchGorithm!");
+            System.out.print("Please choose one of the following: " + userInput.PROFILES.getInput() + ", "
+                    + userInput.MATCH_LIST.getInput() + ", "
+                    + userInput.MESSAGES.getInput() + " or " + userInput.EXIT.getInput() + ".");
+
             String input = scanner.nextLine().trim().toUpperCase();
             switch (input) {
                 case "PROFILES":
-                    result = userInput.PROFILES;
+                    userInterfaceStatus = UserInterfaceStatus.SWIPE;
+                    validInput = true;
+                    break;
+                case "MATCH LIST":
+                    userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
                     validInput = true;
                     break;
                 case "MESSAGES":
-                    result = userInput.MESSAGES;
+                    userInterfaceStatus = UserInterfaceStatus.MESSENGER;
                     validInput = true;
                     break;
                 case "EXIT":
-                    result = userInput.EXIT;
                     validInput = true;
+                    userInterfaceStatus = UserInterfaceStatus.EXIT;
                     break;
             }
         }
-        return result;
+        return userInterfaceStatus;
     }
 
     //------------------------------------------------------------
     // PROFILE SCREEN METHODS
     //------------------------------------------------------------
 
+    // model method: SwipeApp, get matches with random possibilities as you swipe right
     private void showProfile() {
         boolean runLoop = true;
         while (runLoop) {
@@ -87,14 +134,15 @@ public class MatchGorithmApp {
                 case SWIPE_RIGHT:
                     int chanceRight = rand.nextInt(99);
                     if (chanceRight >= 50){
-                        messenger.getMatches().add(0,profile);
+                        matches.add(0,profile);
+                        // TODO: print a message: You are matched!
                     }
-                    System.out.println(messenger);
                     break;
                 case SUPER_LIKE:
                     int chanceSuper = rand.nextInt(99);
                     if (chanceSuper >= 25) {
-                        messenger.getMatches().add(0, profile);
+                        matches.add(0, profile);
+                        // Same as above
                     }
                     break;
                 case EXIT:
@@ -104,6 +152,7 @@ public class MatchGorithmApp {
         }
     }
 
+    // model method: SwipeApp, takeSs in user actions (LEFT, RIGHT, SUPER LIKE, EXIT)
     private userInput promptForSwipe() {
         userInput result = null;
         boolean validInput = false;
@@ -117,6 +166,8 @@ public class MatchGorithmApp {
                     result = userInput.SWIPE_LEFT;
                     validInput = true;
                     break;
+
+                    // This is where you can get matches, use promptForMatches here
                 case "RIGHT":
                     result = userInput.SWIPE_RIGHT;
                     validInput = true;
@@ -137,6 +188,10 @@ public class MatchGorithmApp {
     //------------------------------------------------------------
     // MESSENGER METHODS
     //------------------------------------------------------------
+
+    /*
+     * TODO: check later
+    
     private void showMessages() {
         boolean runLoop = true;
         while (runLoop) {
@@ -185,6 +240,9 @@ public class MatchGorithmApp {
 
     }
 
+
+     */
+
     //-------------------------------------------------------------
     //  INNER ENUM
     // ------------------------------------------------------------
@@ -194,6 +252,7 @@ public class MatchGorithmApp {
         SWIPE_RIGHT("Right"),
         SUPER_LIKE("Super Like"),
         PROFILES ("Profiles"),
+        MATCH_LIST ("Match list"),
         MESSAGES ("Messages"),
         EXIT("Exit");
 
