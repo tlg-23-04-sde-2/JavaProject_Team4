@@ -2,29 +2,82 @@ package com.matchgorithm.app;
 
 import com.matchgorithm.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import java.util.Scanner;
 
 
 public class MatchGorithmApp {
     private final Scanner scanner = new Scanner(System.in); //read inputs from console
-    List<Profile> matches = new ArrayList<Profile>();
+  
+    private Messenger messenger = new Messenger();
+    private Random rand = new Random();
+
+    public MatchGorithmApp() {
+    }
 
     public void execute() {
         Bio.initializeBioList();
         Name.initializeNameList();
         Picture.initializePicList();
         Career.initializeCareerList();
-        showProfile();
-
+        showHomeScreen();
     }
+
+    //------------------------------------------------------------
+    // HOME SCREEN METHODS
+    //------------------------------------------------------------
+    private void showHomeScreen() {
+        boolean runLoop = true;
+        while (runLoop) {
+            System.out.println("Welcome to MatchGorithm!");
+            userInput result = promptForMenu();
+            switch (result){
+                case PROFILES:
+                    showProfile();
+                    break;
+                case MESSAGES:
+                    showMessages();
+                    break;
+                case EXIT:
+                    runLoop = false;
+                    break;
+            }
+        }
+    }
+
+    private userInput promptForMenu() {
+        userInput result = null;
+        boolean validInput = false;
+        while (!validInput) {
+            System.out.print("Please choose one of the following: " + userInput.PROFILES.getInput() + ", " +
+                    userInput.MESSAGES.getInput() + " or " + userInput.EXIT.getInput() + ".");
+            String input = scanner.nextLine().trim().toUpperCase();
+            switch (input) {
+                case "PROFILES":
+                    result = userInput.PROFILES;
+                    validInput = true;
+                    break;
+                case "MESSAGES":
+                    result = userInput.MESSAGES;
+                    validInput = true;
+                    break;
+                case "EXIT":
+                    result = userInput.EXIT;
+                    validInput = true;
+                    break;
+            }
+        }
+        return result;
+    }
+
+    //------------------------------------------------------------
+    // PROFILE SCREEN METHODS
+    //------------------------------------------------------------
 
     private void showProfile() {
         boolean runLoop = true;
         while (runLoop) {
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
             Profile profile = new Profile();
             System.out.println(profile);
             userInput result = promptForSwipe();
@@ -32,12 +85,17 @@ public class MatchGorithmApp {
                 case SWIPE_LEFT:
                     break;
                 case SWIPE_RIGHT:
+                    int chanceRight = rand.nextInt(99);
+                    if (chanceRight >= 50){
+                        messenger.getMatches().add(0,profile);
+                    }
+                    System.out.println(messenger);
                     break;
                 case SUPER_LIKE:
-                    break;
-                case NEXT_PIC:
-                    break;
-                case PREVIOUS_PIC:
+                    int chanceSuper = rand.nextInt(99);
+                    if (chanceSuper >= 25) {
+                        messenger.getMatches().add(0, profile);
+                    }
                     break;
                 case EXIT:
                     runLoop = false;
@@ -50,9 +108,9 @@ public class MatchGorithmApp {
         userInput result = null;
         boolean validInput = false;
         while (!validInput) {
-            System.out.print("Input choices are " + userInput.SWIPE_LEFT+ ", " +
-                    userInput.SWIPE_RIGHT + ", " + userInput.SUPER_LIKE + ", " +
-                    userInput.NEXT_PIC +  " and " + userInput.PREVIOUS_PIC + ": ");
+            System.out.print("Please enter either " + userInput.SWIPE_LEFT.getInput()+ ", " +
+                    userInput.SWIPE_RIGHT.getInput() + ", " + userInput.SUPER_LIKE.getInput() + " or "
+                    + userInput.EXIT.getInput() + ": ");
             String input = scanner.nextLine().trim().toUpperCase();
             switch(input) {
                 case "LEFT":
@@ -67,14 +125,6 @@ public class MatchGorithmApp {
                     result = userInput.SUPER_LIKE;
                     validInput = true;
                     break;
-                case "NEXT PIC":
-                    result = userInput.NEXT_PIC;
-                    validInput = true;
-                    break;
-                case "PREVIOUS PIC":
-                    result = userInput.PREVIOUS_PIC;
-                    validInput = true;
-                    break;
                 case "EXIT":
                     result = userInput.EXIT;
                     validInput = true;
@@ -83,24 +133,82 @@ public class MatchGorithmApp {
         }
         return result;
     }
+  
+    //------------------------------------------------------------
+    // MESSENGER METHODS
+    //------------------------------------------------------------
+    private void showMessages() {
+        boolean runLoop = true;
+        while (runLoop) {
+            System.out.println("This is your match inbox: ");
+            System.out.println(messenger);
+            String result = promptForMatch();
+            if (result.equals("Exit")){
+                runLoop = false;
+            }
+            else {
+                System.out.println("Here is your message history with " + result);
+            }
+        }
+    }
 
-    private void printMainMenu() {
-        /*
-         * Show choices of swipe interface and chat interface
-         */
-
-        // At the bottom of the screen, present options, such as: Swipe (S) | Chat(C)
-        System.out.println("Swipe(S) | Chat(C)");
+    private String promptForMatch() {
+        String result = "";
+        boolean validInput = false;
+        while (!validInput) {
+            if(messenger.getMatches().isEmpty()){
+                System.out.println("You have no matches! Type Exit to return to home screen");
+                String input = scanner.nextLine().trim().toUpperCase();
+                if (input.equals("EXIT")) {
+                    result = "Exit";
+                    validInput = true;
+                }
+            }
+            else {
+                System.out.println("Please enter the name of your match or exit");
+                String input = scanner.nextLine().trim().toUpperCase();
+                for (Profile match : messenger.getMatches()) {
+                    if (input.equals(match.getName().getName().toUpperCase())) {
+                        System.out.println("Person found!");
+                        result = match.getName().getName();
+                        validInput = true;
+                        break;
+                    } else if (input.equals("EXIT")) {
+                        result = "Exit";
+                        validInput = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
 
     }
 
-    private void matchWithBot(Profile profile) {
-        // can implement Random to simulate random chances of matching
-        matches.add(profile);
-    }
+    //-------------------------------------------------------------
+    //  INNER ENUM
+    // ------------------------------------------------------------
 
-    public static enum userInput {
-        SWIPE_LEFT, SWIPE_RIGHT, SUPER_LIKE, NEXT_PIC, PREVIOUS_PIC, EXIT
-    }
+    public enum userInput {
+        SWIPE_LEFT("Left"),
+        SWIPE_RIGHT("Right"),
+        SUPER_LIKE("Super Like"),
+        PROFILES ("Profiles"),
+        MESSAGES ("Messages"),
+        EXIT("Exit");
 
+        private final String input;
+
+        userInput(String input) {
+            this.input = input;
+        }
+
+        public String getInput() {
+            return input;
+        }
+
+        public String toString() {
+            return getInput();
+        }
+    }
 }
