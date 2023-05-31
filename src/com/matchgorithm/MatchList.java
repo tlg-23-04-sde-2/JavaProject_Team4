@@ -6,7 +6,7 @@ import org.fusesource.jansi.AnsiConsole;
 import java.util.ArrayList;
 import java.util.List;
 
-class Chat {
+class MatchList {
     /*
      * 1. Need to store a list of matched profiles
      * 2. Basic functionalities:
@@ -24,7 +24,7 @@ class Chat {
     private int currentPage = 0;    // show 10 matches per page
 
     // constructor
-    public Chat(List<Profile> matches) {
+    public MatchList(List<Profile> matches) {
         this.matches = matches;
     }
 
@@ -87,6 +87,7 @@ class Chat {
         return selectedProfile;
     }
 
+    // TODO: Need to move it to Chat Interface
     void chat() {
     }
 

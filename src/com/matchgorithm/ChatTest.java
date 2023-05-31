@@ -1,16 +1,8 @@
 package com.matchgorithm;
 
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
-
-import org.fusesource.jansi.AnsiConsole;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import static org.fusesource.jansi.Ansi.*;
-import static org.fusesource.jansi.Ansi.Color.*;
 
 class ChatTest{
     public static void main(String[] args) {
@@ -20,18 +12,19 @@ class ChatTest{
         Picture.initializePicList();
         Career.initializeCareerList();
 
-        List<Profile> matchList = new ArrayList<>();
+        List<Profile> matches = new ArrayList<>();
 
         for (int i = 0; i < 31; i++) {
-            matchList.add(new Profile());
+            matches.add(new Profile());
         }
 
-        Chat chat = new Chat(matchList);
+        MatchList matchList = new MatchList(matches);
 
-        chat.showMatchList();
+        matchList.showMatchList();
 
         Scanner in = new Scanner(System.in);
 
+        // TODO: Currently selectMatch is selecting the next page profile, need to fix it.
         boolean hasSelectedMatch = false;
         while (!hasSelectedMatch) {
             String input = in.nextLine();
@@ -40,13 +33,13 @@ class ChatTest{
                 choice = Integer.parseInt(input);
                 if (0 <= choice && choice <= 9) {
                     hasSelectedMatch = true;
-                    int selectedMatch = choice + chat.getCurrentPage() * Chat.matchesPerPage;
-                    System.out.println(matchList.get(selectedMatch));
+                    int selectedMatch = choice + matchList.getCurrentPage() * MatchList.matchesPerPage;
+                    System.out.println(matchList.selectedMatch(selectedMatch));
                 }
             }
             catch (IllegalArgumentException e) {
             }
-            chat.flipPage(input);
+            matchList.flipPage(input);
         }
     }
 }
