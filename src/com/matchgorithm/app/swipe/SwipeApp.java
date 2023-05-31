@@ -1,14 +1,13 @@
 package com.matchgorithm.app.swipe;
 
 import com.matchgorithm.Profile;
-import com.matchgorithm.UserInterfaceStatus;
+import com.matchgorithm.app.UserInterfaceStatus;
 import com.matchgorithm.app.AppInterface;
 import org.fusesource.jansi.Ansi;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;

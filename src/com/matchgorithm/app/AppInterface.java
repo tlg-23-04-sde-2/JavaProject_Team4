@@ -1,9 +1,7 @@
 package com.matchgorithm.app;
 
-import com.matchgorithm.UserInterfaceStatus;
-
 public interface AppInterface {
-    public void execute();
+    void execute();
 
-    public UserInterfaceStatus updateUserInterfaceStatus();
+    UserInterfaceStatus updateUserInterfaceStatus();
 }

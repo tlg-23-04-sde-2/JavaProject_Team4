@@ -1,6 +1,7 @@
 package com.matchgorithm.app;
 
 import com.matchgorithm.*;
+import com.matchgorithm.app.match_list.MatchListApp;
 import com.matchgorithm.app.swipe.SwipeApp;
 import org.fusesource.jansi.Ansi;
 
@@ -27,9 +28,6 @@ public class MatchGorithmApp {
 
         MatchListApp matchListApp = new MatchListApp(matches);
         SwipeApp swipeApp = new SwipeApp(matches);
-
-        Scanner scanner = new Scanner(System.in);
-        Random rand = new Random();
 
         while (userInterfaceStatus != UserInterfaceStatus.EXIT) {
             switch (userInterfaceStatus) {
@@ -91,7 +89,7 @@ public class MatchGorithmApp {
         }
         return userInterfaceStatus;
     }
-    
+
     private void printFileInColor(String file){
 
         String content = "";

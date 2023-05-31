@@ -1,5 +1,7 @@
-package com.matchgorithm;
+package com.matchgorithm.app.match_list;
 
+import com.matchgorithm.Profile;
+import com.matchgorithm.app.UserInterfaceStatus;
 import com.matchgorithm.app.AppInterface;
 
 import java.util.ArrayList;
@@ -8,8 +10,9 @@ import java.util.Scanner;
 
 public class MatchListApp implements AppInterface {
 
+    // instance
     private List<Profile> matches = new ArrayList<>();
-    private MatchList matchList;
+    private final MatchList matchList;
     private UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
 
     // constructor

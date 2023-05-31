@@ -1,5 +1,6 @@
-package com.matchgorithm;
+package com.matchgorithm.app.match_list;
 
+import com.matchgorithm.Profile;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 import org.w3c.dom.ls.LSOutput;
