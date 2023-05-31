@@ -1,10 +1,12 @@
 package com.matchgorithm;
 
+import com.matchgorithm.app.AppInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MatchListApp {
+public class MatchListApp implements AppInterface {
 
     private List<Profile> matches = new ArrayList<>();
     private MatchList matchList;
@@ -17,11 +19,12 @@ public class MatchListApp {
     }
 
     // business method
+    @Override
     public void execute() {
-        matchListAppOperation(matches);
+        operate(matches);
     }
 
-    private void matchListAppOperation
+    private void operate
             (List<Profile> matches) {
 
         matchList.showMatchList();
