@@ -36,10 +36,6 @@ public class Profile {
         return pic;
     }
 
-    public Name getName() {
-        return name;
-    }
-
     public Bio getBio() {
         return bio;
     }
@@ -54,10 +50,6 @@ public class Profile {
 
     public int getDistance() {
         return distance;
-    }
-
-    public Name getName() {
-        return name;
     }
 
     public Name getName() {
