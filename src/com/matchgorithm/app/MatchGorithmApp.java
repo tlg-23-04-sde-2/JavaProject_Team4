@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class MatchGorithmApp {
     private final Scanner scanner = new Scanner(System.in); //read inputs from console
+  
     private Messenger messenger = new Messenger();
     private Random rand = new Random();
 
@@ -132,7 +133,7 @@ public class MatchGorithmApp {
         }
         return result;
     }
-
+  
     //------------------------------------------------------------
     // MESSENGER METHODS
     //------------------------------------------------------------
@@ -181,6 +182,7 @@ public class MatchGorithmApp {
             }
         }
         return result;
+
     }
 
     //-------------------------------------------------------------

@@ -72,4 +72,9 @@ public class Career {
     public void setCompany(String company) {
         this.company = company;
     }
+
+    @Override
+    public String toString() {
+        return getJob() + " @ " + getCompany();
+    }
 }
