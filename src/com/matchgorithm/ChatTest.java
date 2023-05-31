@@ -9,16 +9,12 @@ import static org.fusesource.jansi.Ansi.Color.*;
 
 class ChatTest{
     public static void main(String[] args) {
-        Ansi a =  ansi();
+        Ansi a = ansi();
         a.fgYellow().a("Hello ");
         a.fgRed().a("how ");
-        //a.saveCursorPosition();
         a.fgGreen().a("are ");
-        a.cursor(0, 0);
-        //a.restoreCursorPosition().a("replace");
-        a.a("\033[2J");
+        a.fgBlack().a("you");
         AnsiConsole.out().println(a);
-
     }
 
 
