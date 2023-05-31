@@ -49,6 +49,7 @@ public class SwipeApp implements AppInterface {
         Random rand = new Random();
 
         // delegate user input to specific actions
+        // TODO: allow pause after matched
         switch (input){
             case "S":
                 int chanceRight = rand.nextInt(99);

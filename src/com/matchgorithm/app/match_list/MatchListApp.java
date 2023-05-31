@@ -44,12 +44,12 @@ public class MatchListApp implements AppInterface {
                 choice = Integer.parseInt(input);
 
                 if (choice >= 0) {
-                    int lastPage = matches.size() / MatchList.matchesPerPage;
+                    int lastPage = matches.size() / MatchList.MATCHES_PER_PAGE;
 
                     if ((matchList.getCurrentPage() < lastPage
-                            && choice < MatchList.matchesPerPage)
+                            && choice < MatchList.MATCHES_PER_PAGE)
                             | (matchList.getCurrentPage() == lastPage
-                            && choice < matches.size() % MatchList.matchesPerPage)) {
+                            && choice < matches.size() % MatchList.MATCHES_PER_PAGE)) {
                         userInterfaceStatus = UserInterfaceStatus.MESSENGER;
                         System.out.println(matchList.selectedMatch(choice));
                     }

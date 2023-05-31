@@ -2,11 +2,8 @@ package com.matchgorithm.app.match_list;
 
 import com.matchgorithm.Profile;
 import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.List;
-import java.util.Locale;
 
 class MatchList {
     /*
@@ -18,10 +15,10 @@ class MatchList {
      */
 
     // Constant field
-    public static final int matchesPerPage = 10;
+    public static final int MATCHES_PER_PAGE = 10;
 
     // Fields & properties
-    private List<Profile> matches;
+    private final List<Profile> matches;
 
     private int currentPage = 0;    // show 10 matches per page
 
@@ -48,8 +45,8 @@ class MatchList {
     // view method: show the matches on the current page
     void showMatchList() {
         int matchesShown =
-                currentPage == matches.size() / matchesPerPage ?
-                        matches.size() % matchesPerPage : 10;
+                currentPage == matches.size() / MATCHES_PER_PAGE ?
+                        matches.size() % MATCHES_PER_PAGE : 10;
 
         Ansi ansi = new Ansi();
         for (int i = 0; i < matchesShown; i++) {
@@ -86,7 +83,7 @@ class MatchList {
                 }
                 break;
             case "N":   // Next page
-                if ((currentPage + 1) * matchesPerPage < matches.size()) {
+                if ((currentPage + 1) * MATCHES_PER_PAGE < matches.size()) {
                     currentPage++;
                     showMatchList();
                 }
@@ -103,7 +100,7 @@ class MatchList {
     // model method: returns the selected profile
     Profile selectedMatch(int choice) {
 
-        int indexOfChoice = choice + getCurrentPage() * matchesPerPage;
+        int indexOfChoice = choice + getCurrentPage() * MATCHES_PER_PAGE;
         return matches.get(indexOfChoice);
     }
 
