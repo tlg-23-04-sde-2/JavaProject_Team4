@@ -1,4 +1,4 @@
-package com.matchgorithm;
+package com.matchgorithm.app.swipe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.io.File.*;
 
 public class Picture {
 

@@ -1,17 +1,19 @@
-package com.matchgorithm;
+package com.matchgorithm.app.matchlist;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import com.matchgorithm.app.swipe.Profile;
+import com.matchgorithm.app.AppInterfaceState;
 
 public class MatchListApp {
 
     private List<Profile> matches = new ArrayList<>();
     private MatchList matchList;
-    UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
+    AppInterfaceState userInterfaceStatus = AppInterfaceState.MATCH_LIST;
 
     // constructor
-    public MatchListApp(List<Profile> matches, UserInterfaceStatus userInterfaceStatus) {
+    public MatchListApp(List<Profile> matches, AppInterfaceState userInterfaceStatus) {
         this.matches = matches;
         this.matchList = new MatchList(matches);
         this.userInterfaceStatus = userInterfaceStatus;
@@ -22,15 +24,15 @@ public class MatchListApp {
         matchListAppOperation(userInterfaceStatus, matches);
     }
 
-    public UserInterfaceStatus matchListAppOperation
-            (UserInterfaceStatus userInterfaceStatus, List<Profile> matches) {
+    public AppInterfaceState matchListAppOperation
+            (AppInterfaceState userInterfaceStatus, List<Profile> matches) {
 
 
         matchList.showMatchList();
 
         Scanner in = new Scanner(System.in);
 
-        while (userInterfaceStatus == UserInterfaceStatus.MATCH_LIST) {
+        while (userInterfaceStatus == AppInterfaceState.MATCH_LIST) {
             String input = in.nextLine();
 
             // TODO: complete messenger interface
@@ -46,7 +48,7 @@ public class MatchListApp {
                             && choice < MatchList.matchesPerPage)
                             | (matchList.getCurrentPage() == lastPage
                             && choice < matches.size() % MatchList.matchesPerPage)) {
-                        userInterfaceStatus = UserInterfaceStatus.MESSENGER;
+                        userInterfaceStatus = AppInterfaceState.MESSENGER;
                         System.out.println(matchList.selectedMatch(choice));
                     }
                 }

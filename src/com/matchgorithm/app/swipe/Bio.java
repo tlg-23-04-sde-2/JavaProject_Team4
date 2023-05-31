@@ -1,4 +1,4 @@
-package com.matchgorithm;
+package com.matchgorithm.app.swipe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
