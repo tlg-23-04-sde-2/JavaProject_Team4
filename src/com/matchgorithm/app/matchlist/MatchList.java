@@ -1,9 +1,9 @@
-package com.matchgorithm;
+package com.matchgorithm.app.matchlist;
 
 import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
+import com.matchgorithm.app.swipe.Profile;
+import com.matchgorithm.app.AppInterfaceState;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class MatchList {
@@ -89,11 +89,11 @@ class MatchList {
     }
 
     // model method: place-holder for exiting to main menu
-    UserInterfaceStatus returnToMainMenu(String input, UserInterfaceStatus userInterfaceStatus) {
+    AppInterfaceState returnToMainMenu(String input, AppInterfaceState userInterfaceStatus) {
         if ("M".equals(input)) {
             // TODO: complete main menu user interface
             System.out.println("Return to main menu.\n");
-            userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
+            userInterfaceStatus = AppInterfaceState.MAIN_MENU;
         }
         return userInterfaceStatus;
     }
