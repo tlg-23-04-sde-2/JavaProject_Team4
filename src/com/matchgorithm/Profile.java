@@ -1,9 +1,11 @@
 package com.matchgorithm;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Profile {
 
+    // class level static variable
     private static int id = 0;
 
     //Instance Variables
@@ -13,6 +15,8 @@ public class Profile {
     private Career career;
     private int age;
     private int distance;
+
+    private int uniqueId;
 
     //Constructor
     public Profile() {
@@ -26,9 +30,17 @@ public class Profile {
 
         // create unique ID for each instance
         id++;
+        this.uniqueId = id;
     }
 
-    public static int getId() {
+
+    // accessor methods
+
+    public int getUniqueId() {
+        return uniqueId;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -57,9 +69,22 @@ public class Profile {
     }
 
     @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        Profile profile = (Profile) other;
+        return uniqueId == profile.uniqueId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uniqueId);
+    }
+
+    @Override
     public String toString() {
        return "\f" + pic.getPic() + "\n" +
-               name.getName() +", " + age + "\n" +
+               name.getName() +" (id_" + getUniqueId()+ "), age " + age + "\n" +
                career.getJob() + " @ " + career.getCompany() + "\n" +
                distance + " miles away" + "\n \n" +
                name.getName() + " enjoys " + bio.getBio().get(0) + ", " + bio.getBio().get(1) + ", and " + bio.getBio().get(2) + "\n \n" +

@@ -10,7 +10,7 @@ import com.matchgorithm.app.match_list.MatchListApp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessengerApp extends MatchListApp implements AppInterface {
+public class MessengerApp implements AppInterface {
 
     // instance variables
     UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MESSENGER;
@@ -19,19 +19,26 @@ public class MessengerApp extends MatchListApp implements AppInterface {
 
     // constructor
     public MessengerApp(List<Profile> matches) {
-        super(matches);
         this.matches = matches;
         this.matchList = new MatchList(matches);
     }
 
     // TODO: to be completed
-//    @Override
-//    public void execute() {
-//        // calibrate userInterfaceStatus to the current one
-//        userInterfaceStatus = UserInterfaceStatus.MESSENGER;
+    @Override
+    public void execute() {
+        // calibrate userInterfaceStatus to the current one
+        userInterfaceStatus = UserInterfaceStatus.MESSENGER;
+
+        // user chat with bot
+        // bot read stored messages from txt file
+        // store conversation as value in String map
+
+//        chat();
 //
-//
-//    }
+//        exit();
+
+
+    }
 
 
     // accessor methods

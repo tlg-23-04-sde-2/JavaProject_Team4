@@ -30,9 +30,9 @@ public class MainMenuApp implements AppInterface {
 
         // present user options in main menu
         Ansi ansi = new Ansi();
-        String mainMenuOptionView = "Swipe(S) | Matches(M) | Chats(C)\n"
-                + "            Exit(X)\n"
-                + "            Enter: ";
+        String mainMenuOptionView = "Swipe(S) | Matches(M)\n"
+                                  + "      Exit(X)\n"
+                                  + "      Enter: ";
         System.out.print(ansi.fgGreen().bold().a(mainMenuOptionView).reset());
 
         Scanner scanner = new Scanner(System.in);
@@ -45,9 +45,6 @@ public class MainMenuApp implements AppInterface {
                 break;
             case "M":
                 userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
-                break;
-            case "C":
-                userInterfaceStatus = UserInterfaceStatus.MESSENGER;
                 break;
             case "X":
                 userInterfaceStatus = UserInterfaceStatus.EXIT;

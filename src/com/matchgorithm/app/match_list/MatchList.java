@@ -43,13 +43,13 @@ public class MatchList {
         Ansi ansi = new Ansi();
 
         System.out.println(ansi.fgBrightMagenta()
-                .a("*********************************************************************\n").reset());
+                .a("**************************************************************************\n").reset());
 
         for (int i = 0; i < matchesShown; i++) {
             Profile profile = matches.get(i + currentPage * 10);
 
-            System.out.printf("%s. %s: Age %s, %s, %s miles\n\n",
-                    i, profile.getName(), profile.getAge(),
+            System.out.printf("%s. %s (id_%s): age %s, %s, %s miles\n\n",
+                    i, profile.getName(), profile.getUniqueId(), profile.getAge(),
                     profile.getCareer(), profile.getDistance());
         }
 
