@@ -1,4 +1,4 @@
-package com.matchgorithm.app.swipe;
+package com.matchgorithm;
 
 import java.util.Random;
 
@@ -50,6 +50,10 @@ public class Profile {
 
     public int getDistance() {
         return distance;
+    }
+
+    public Name getName() {
+        return name;
     }
 
     @Override
