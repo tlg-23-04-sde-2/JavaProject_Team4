@@ -1,212 +1,139 @@
 package com.matchgorithm.app;
 
 import com.matchgorithm.*;
+import com.matchgorithm.app.match_list.MatchListApp;
+import com.matchgorithm.app.swipe.SwipeApp;
+import com.matchgorithm.app.message.MessageApp;
+import org.fusesource.jansi.Ansi;
 
-import java.util.Locale;
-import java.util.Random;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 
 public class MatchGorithmApp {
-    private final Scanner scanner = new Scanner(System.in); //read inputs from console
-    private Messenger messenger = new Messenger();
-    private Random rand = new Random();
+    //--------------------------------------------------------------------------
+    // instance fields
+    //--------------------------------------------------------------------------
+    // by default, the app opens to the main menu
+    private static AppInterfaceState appInterfaceState = AppInterfaceState.MAIN_MENU;
+    private static final String WELCOME_BANNER_PATH = "data/prompt_messages/welcome_banner.txt";
 
+    //--------------------------------------------------------------------------
+    // constructor
+    //--------------------------------------------------------------------------
     public MatchGorithmApp() {
     }
 
+    //--------------------------------------------------------------------------
+    // business methods
+    //--------------------------------------------------------------------------
     public void execute() {
+        // initialize static lists containing user data - done once at beginning
         Bio.initializeBioList();
         Name.initializeNameList();
         Picture.initializePicList();
         Career.initializeCareerList();
-        showHomeScreen();
-    }
+        MessageApp.initializeMessageList();
 
-    //------------------------------------------------------------
-    // HOME SCREEN METHODS
-    //------------------------------------------------------------
-    private void showHomeScreen() {
-        boolean runLoop = true;
-        while (runLoop) {
-            System.out.println("Welcome to MatchGorithm!");
-            userInput result = promptForMenu();
-            switch (result){
-                case PROFILES:
-                    showProfile();
+        // this matches list will be used by all component classes:
+        //  1) SwipeApp needs it to add new matches
+        //  2) MatchListApp needs it to print directory of matches and their profiles
+        //  3) MessageApp needs it to simulate conversations with matches
+        List<Profile> matches = new ArrayList<>();
+
+        // using HAS-A composition with helper class objects
+        SwipeApp swipeApp = new SwipeApp();
+        MatchListApp matchListApp = new MatchListApp(matches);
+        MessageApp messageApp = new MessageApp();
+
+        // outermost loop - controlling entire app with switchboard below
+        while (appInterfaceState != AppInterfaceState.EXIT) {
+            promptMainMenuInput();
+            switch (appInterfaceState) {
+                case SWIPE:
+                    matches = swipeApp.execute(matches);
+                    appInterfaceState = AppInterfaceState.MAIN_MENU;
                     break;
-                case MESSAGES:
-                    showMessages();
+                case MATCH_LIST:
+                    matchListApp.execute();
+                    // appInterfaceState = matchListApp.updateUserInterfaceStatus();
+                    appInterfaceState = AppInterfaceState.MAIN_MENU;
                     break;
-                case EXIT:
-                    runLoop = false;
+                case MESSENGER:
+                    messageApp.execute(matches);
+                    appInterfaceState = AppInterfaceState.MAIN_MENU;
+                    break;
+                default:
                     break;
             }
         }
     }
 
-    private userInput promptForMenu() {
-        userInput result = null;
+    private void promptMainMenuInput() {
         boolean validInput = false;
         while (!validInput) {
-            System.out.print("Please choose one of the following: " + userInput.PROFILES.getInput() + ", " +
-                    userInput.MESSAGES.getInput() + " or " + userInput.EXIT.getInput() + ".");
+            // clear the console
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            );
+
+            printFileInColor(WELCOME_BANNER_PATH);
+
+            // present user options in main menu
+            Ansi ansi = new Ansi();
+            String mainMenuOptionView =
+                            "\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                            "                    Swipe(S) | Matches(M) | Chats(C)\n" +
+                            "                                Exit(X)" +
+                            "\n\n\n\n\n\n\n" +
+                            "                                Enter : ";
+            System.out.print(ansi.fgGreen().bold().a(mainMenuOptionView).reset());
+
+            Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim().toUpperCase();
             switch (input) {
-                case "PROFILES":
-                    result = userInput.PROFILES;
+                case "S":
+                    appInterfaceState = AppInterfaceState.SWIPE;
                     validInput = true;
                     break;
-                case "MESSAGES":
-                    result = userInput.MESSAGES;
+                case "M":
+                    appInterfaceState = AppInterfaceState.MATCH_LIST;
                     validInput = true;
                     break;
-                case "EXIT":
-                    result = userInput.EXIT;
+                case "C":
+                    appInterfaceState = AppInterfaceState.MESSENGER;
                     validInput = true;
                     break;
-            }
-        }
-        return result;
-    }
-
-    //------------------------------------------------------------
-    // PROFILE SCREEN METHODS
-    //------------------------------------------------------------
-
-    private void showProfile() {
-        boolean runLoop = true;
-        while (runLoop) {
-            Profile profile = new Profile();
-            System.out.println(profile);
-            userInput result = promptForSwipe();
-            switch (result){
-                case SWIPE_LEFT:
-                    break;
-                case SWIPE_RIGHT:
-                    int chanceRight = rand.nextInt(99);
-                    if (chanceRight >= 50){
-                        messenger.getMatches().add(0,profile);
-                    }
-                    System.out.println(messenger);
-                    break;
-                case SUPER_LIKE:
-                    int chanceSuper = rand.nextInt(99);
-                    if (chanceSuper >= 25) {
-                        messenger.getMatches().add(0, profile);
-                    }
-                    break;
-                case EXIT:
-                    runLoop = false;
+                case "X":
+                    appInterfaceState = AppInterfaceState.EXIT;
+                    validInput = true;
                     break;
             }
         }
     }
 
-    private userInput promptForSwipe() {
-        userInput result = null;
-        boolean validInput = false;
-        while (!validInput) {
-            System.out.print("Please enter either " + userInput.SWIPE_LEFT.getInput()+ ", " +
-                    userInput.SWIPE_RIGHT.getInput() + ", " + userInput.SUPER_LIKE.getInput() + " or "
-                    + userInput.EXIT.getInput() + ": ");
-            String input = scanner.nextLine().trim().toUpperCase();
-            switch(input) {
-                case "LEFT":
-                    result = userInput.SWIPE_LEFT;
-                    validInput = true;
-                    break;
-                case "RIGHT":
-                    result = userInput.SWIPE_RIGHT;
-                    validInput = true;
-                    break;
-                case "SUPER LIKE":
-                    result = userInput.SUPER_LIKE;
-                    validInput = true;
-                    break;
-                case "EXIT":
-                    result = userInput.EXIT;
-                    validInput = true;
-                    break;
-            }
-        }
-        return result;
-    }
+    private void printFileInColor(String file){
 
-    //------------------------------------------------------------
-    // MESSENGER METHODS
-    //------------------------------------------------------------
-    private void showMessages() {
-        boolean runLoop = true;
-        while (runLoop) {
-            System.out.println("This is your match inbox: ");
-            System.out.println(messenger);
-            String result = promptForMatch();
-            if (result.equals("Exit")){
-                runLoop = false;
-            }
-            else {
-                System.out.println("Here is your message history with " + result);
-            }
-        }
-    }
-
-    private String promptForMatch() {
-        String result = "";
-        boolean validInput = false;
-        while (!validInput) {
-            if(messenger.getMatches().isEmpty()){
-                System.out.println("You have no matches! Type Exit to return to home screen");
-                String input = scanner.nextLine().trim().toUpperCase();
-                if (input.equals("EXIT")) {
-                    result = "Exit";
-                    validInput = true;
-                }
-            }
-            else {
-                System.out.println("Please enter the name of your match or exit");
-                String input = scanner.nextLine().trim().toUpperCase();
-                for (Profile match : messenger.getMatches()) {
-                    if (input.equals(match.getName().getName().toUpperCase())) {
-                        System.out.println("Person found!");
-                        result = match.getName().getName();
-                        validInput = true;
-                        break;
-                    } else if (input.equals("EXIT")) {
-                        result = "Exit";
-                        validInput = true;
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    //-------------------------------------------------------------
-    //  INNER ENUM
-    // ------------------------------------------------------------
-
-    public enum userInput {
-        SWIPE_LEFT("Left"),
-        SWIPE_RIGHT("Right"),
-        SUPER_LIKE("Super Like"),
-        PROFILES ("Profiles"),
-        MESSAGES ("Messages"),
-        EXIT("Exit");
-
-        private final String input;
-
-        userInput(String input) {
-            this.input = input;
+        String content = "";
+        try {
+            Path filePath = Path.of(file);
+            content = Files.readString(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        public String getInput() {
-            return input;
-        }
+        Ansi ansi = new Ansi();
+        System.out.println(ansi.fgBrightMagenta().a(content).reset());
 
-        public String toString() {
-            return getInput();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
