@@ -2,11 +2,8 @@ package com.matchgorithm.app.match_list;
 
 import com.matchgorithm.Profile;
 import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.List;
-import java.util.Locale;
 
 class MatchList {
     /*
@@ -17,39 +14,46 @@ class MatchList {
      *      - allow user to exit the chat box and back to the list
      */
 
+    // -------------------------------------------------------------------------
     // Constant field
-    public static final int matchesPerPage = 10;
+    // -------------------------------------------------------------------------
+    public static final int MATCHES_PER_PAGE = 10;
 
+    // -------------------------------------------------------------------------
     // Fields & properties
+    // -------------------------------------------------------------------------
     private List<Profile> matches;
-
     private int currentPage = 0;    // show 10 matches per page
 
+    // -------------------------------------------------------------------------
     // constructor
+    // -------------------------------------------------------------------------
     public MatchList(List<Profile> matches) {
         this.matches = matches;
     }
 
+    // -------------------------------------------------------------------------
     // business methods
-
+// -------------------------------------------------------------------------
     // view method: show user options in the "Matches" interface
     void showMatchListInterfaceOptions() {
         Ansi ansi = new Ansi();
-        String options = "               OPTIONS\n "
-                       + "-------------------------------------\n"
-                       + "Enter id number to view profile (0-9)\n"
-                       + "   Previous page(P) | Next Page(N)\n"
-                       + "            Main Menu(M)\n"
-                       + "-------------------------------------\n"
-                       + "                Enter: ";
+        String options = "\n\n\n\n\n\n\n"
+                       + "                             OPTIONS\n "
+                       + "              -------------------------------------\n"
+                       + "              Enter id number to view profile (0-9)\n"
+                       + "                 Previous page(P) | Next Page(N)\n"
+                       + "                               Exit(X)\n"
+                       + "              -------------------------------------\n"
+                       + "                              Enter: ";
         System.out.print(ansi.fgGreen().bold().a(options).reset());
     }
 
     // view method: show the matches on the current page
     void showMatchList() {
         int matchesShown =
-                currentPage == matches.size() / matchesPerPage ?
-                        matches.size() % matchesPerPage : 10;
+                currentPage == matches.size() / MATCHES_PER_PAGE ?
+                        matches.size() % MATCHES_PER_PAGE : 10;
 
         Ansi ansi = new Ansi();
         for (int i = 0; i < matchesShown; i++) {
@@ -59,13 +63,15 @@ class MatchList {
                     i, profile.getName(), profile.getAge(),
                     profile.getCareer(), profile.getDistance());
 
-            // Color highlight
-//            System.out.print(ansi.fgGreen().a(String.valueOf(i)).reset());
-//            System.out.print(". ");
-//            AnsiConsole.out().print(ansi.fgBrightCyan().a(profile.getName()).reset());
-//            System.out.println("： Age "+ profile.getAge() + ", "
-//                    + profile.getCareer() + ", "
-//                    + profile.getDistance() + " mile(s)\n");
+            /*
+             * Color highlight
+             * System.out.print(ansi.fgGreen().a(String.valueOf(i)).reset());
+             * System.out.print(". ");
+             * AnsiConsole.out().print(ansi.fgBrightCyan().a(profile.getName()).reset());
+             * System.out.println("： Age "+ profile.getAge() + ", "
+             *       + profile.getCareer() + ", "
+             *       + profile.getDistance() + " mile(s)\n");
+             */
         }
         showMatchListInterfaceOptions();
     }
@@ -82,16 +88,26 @@ class MatchList {
                 }
                 else {
                     System.out.println(ansi.fgRed().bold().a("\nThis is the first page.\n").reset());
+                    try {
+                        Thread.sleep(1200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     showMatchListInterfaceOptions();
                 }
                 break;
             case "N":   // Next page
-                if ((currentPage + 1) * matchesPerPage < matches.size()) {
+                if ((currentPage + 1) * MATCHES_PER_PAGE < matches.size()) {
                     currentPage++;
                     showMatchList();
                 }
                 else {
                     System.out.println(ansi.fgRed().bold().a("\nThis is the last page.\n").reset());
+                    try {
+                        Thread.sleep(1200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     showMatchListInterfaceOptions();
                 }
                 break;
@@ -103,18 +119,14 @@ class MatchList {
     // model method: returns the selected profile
     Profile selectedMatch(int choice) {
 
-        int indexOfChoice = choice + getCurrentPage() * matchesPerPage;
+        int indexOfChoice = choice + getCurrentPage() * MATCHES_PER_PAGE;
         return matches.get(indexOfChoice);
     }
 
-    // TODO: Need to move it to Chat Interface
-    void chat() {
-    }
-
-    // accessor method
+    // -------------------------------------------------------------------------
+    // accessor methods
+    // -------------------------------------------------------------------------
     public int getCurrentPage() {
         return currentPage;
     }
-
-
 }

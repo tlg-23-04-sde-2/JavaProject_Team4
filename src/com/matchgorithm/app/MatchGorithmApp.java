@@ -3,6 +3,7 @@ package com.matchgorithm.app;
 import com.matchgorithm.*;
 import com.matchgorithm.app.match_list.MatchListApp;
 import com.matchgorithm.app.swipe.SwipeApp;
+import com.matchgorithm.app.message.MessageApp;
 import org.fusesource.jansi.Ansi;
 
 import java.io.IOException;
@@ -12,82 +13,108 @@ import java.util.*;
 
 
 public class MatchGorithmApp {
+    //--------------------------------------------------------------------------
+    // instance fields
+    //--------------------------------------------------------------------------
+    // by default, the app opens to the main menu
+    private static AppInterfaceState appInterfaceState = AppInterfaceState.MAIN_MENU;
+    private static final String WELCOME_BANNER_PATH = "data/prompt_messages/welcome_banner.txt";
 
+    //--------------------------------------------------------------------------
     // constructor
+    //--------------------------------------------------------------------------
     public MatchGorithmApp() {
     }
 
+    //--------------------------------------------------------------------------
+    // business methods
+    //--------------------------------------------------------------------------
     public void execute() {
+        // initialize static lists containing user data - done once at beginning
         Bio.initializeBioList();
         Name.initializeNameList();
         Picture.initializePicList();
         Career.initializeCareerList();
+        MessageApp.initializeMessageList();
 
-        UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
+        // this matches list will be used by all component classes:
+        //  1) SwipeApp needs it to add new matches
+        //  2) MatchListApp needs it to print directory of matches and their profiles
+        //  3) MessageApp needs it to simulate conversations with matches
         List<Profile> matches = new ArrayList<>();
 
+        // using HAS-A composition with helper class objects
+        SwipeApp swipeApp = new SwipeApp();
         MatchListApp matchListApp = new MatchListApp(matches);
-        SwipeApp swipeApp = new SwipeApp(matches);
+        MessageApp messageApp = new MessageApp();
 
-        while (userInterfaceStatus != UserInterfaceStatus.EXIT) {
-            switch (userInterfaceStatus) {
-                case MAIN_MENU:
-                    userInterfaceStatus = promptForMenu(userInterfaceStatus);
-                    break;
+        // outermost loop - controlling entire app with switchboard below
+        while (appInterfaceState != AppInterfaceState.EXIT) {
+            promptMainMenuInput();
+            switch (appInterfaceState) {
                 case SWIPE:
-                    swipeApp.execute();
-                    userInterfaceStatus = swipeApp.updateUserInterfaceStatus();
+                    matches = swipeApp.execute(matches);
+                    appInterfaceState = AppInterfaceState.MAIN_MENU;
                     break;
                 case MATCH_LIST:
                     matchListApp.execute();
-                    userInterfaceStatus = matchListApp.updateUserInterfaceStatus();
+                    // appInterfaceState = matchListApp.updateUserInterfaceStatus();
+                    appInterfaceState = AppInterfaceState.MAIN_MENU;
                     break;
                 case MESSENGER:
-                    //messengerAppOperation();
+                    messageApp.execute(matches);
+                    appInterfaceState = AppInterfaceState.MAIN_MENU;
+                    break;
+                default:
                     break;
             }
         }
     }
 
-    //------------------------------------------------------------
-    // Main Menu Methods
-    //------------------------------------------------------------
-
-    private UserInterfaceStatus promptForMenu(UserInterfaceStatus userInterfaceStatus) {
+    private void promptMainMenuInput() {
         boolean validInput = false;
-
         while (!validInput) {
-            printFileInColor("data/prompt_messages/welcome_banner.txt");
+            // clear the console
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            );
+
+            printFileInColor(WELCOME_BANNER_PATH);
 
             // present user options in main menu
             Ansi ansi = new Ansi();
-            String mainMenuOptionView = "\nSwipe(S) | Matches(M) | Chats(C)\n"
-                                       + "            Exit(X)\n"
-                                       + "            Enter: ";
+            String mainMenuOptionView =
+                            "\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+                            "                    Swipe(S) | Matches(M) | Chats(C)\n" +
+                            "                                Exit(X)" +
+                            "\n\n\n\n\n\n\n" +
+                            "                                Enter : ";
             System.out.print(ansi.fgGreen().bold().a(mainMenuOptionView).reset());
 
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim().toUpperCase();
             switch (input) {
                 case "S":
-                    userInterfaceStatus = UserInterfaceStatus.SWIPE;
+                    appInterfaceState = AppInterfaceState.SWIPE;
                     validInput = true;
                     break;
                 case "M":
-                    userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
+                    appInterfaceState = AppInterfaceState.MATCH_LIST;
                     validInput = true;
                     break;
                 case "C":
-                    userInterfaceStatus = UserInterfaceStatus.MESSENGER;
+                    appInterfaceState = AppInterfaceState.MESSENGER;
                     validInput = true;
                     break;
                 case "X":
+                    appInterfaceState = AppInterfaceState.EXIT;
                     validInput = true;
-                    userInterfaceStatus = UserInterfaceStatus.EXIT;
                     break;
             }
         }
-        return userInterfaceStatus;
     }
 
     private void printFileInColor(String file){
@@ -104,37 +131,9 @@ public class MatchGorithmApp {
         System.out.println(ansi.fgBrightMagenta().a(content).reset());
 
         try {
-            Thread.sleep(800);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
-        }
-    }
-
-
-    //-------------------------------------------------------------
-    //  INNER ENUM
-    // ------------------------------------------------------------
-
-    public enum userInput {
-        SWIPE_LEFT("Left"),
-        SWIPE_RIGHT("Right"),
-        SUPER_LIKE("Super Like"),
-        PROFILES ("Profiles"),
-        MATCH_LIST ("Match list"),
-        MESSAGES ("Messages"),
-        EXIT("Exit");
-
-        private final String input;
-
-        userInput(String input) {
-            this.input = input;
-        }
-
-        public String getInput() {
-            return input;
-        }
-
-        public String toString() {
-            return getInput();
+            e.printStackTrace();
         }
     }
 }
