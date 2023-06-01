@@ -13,6 +13,7 @@ public class Profile {
     private Career career;
     private int age;
     private int distance;
+    private int uniqueId = 0;
 
     //Constructor
     public Profile() {
@@ -25,11 +26,11 @@ public class Profile {
         distance = rand.nextInt(51);
 
         // create unique ID for each instance
-        id++;
+        uniqueId = ++id;
     }
 
-    public static int getId() {
-        return id;
+    public int getUniqueId() {
+        return uniqueId;
     }
 
     public Picture getPic() {
