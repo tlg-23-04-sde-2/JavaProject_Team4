@@ -1,4 +1,4 @@
-package com.matchgorithm.app.swipe;
+package com.matchgorithm;
 
 import java.util.Random;
 

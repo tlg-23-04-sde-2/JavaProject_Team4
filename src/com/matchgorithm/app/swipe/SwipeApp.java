@@ -1,51 +1,76 @@
 package com.matchgorithm.app.swipe;
 
-import com.matchgorithm.app.MatchGorithmApp;
-import com.matchgorithm.app.ValidUserInput;
+import com.matchgorithm.Profile;
+import org.fusesource.jansi.Ansi;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 public class SwipeApp {
-    // _________________________________________________________________________
-    // -------------------------------------------------------------------------
-    // constructor
-    // -------------------------------------------------------------------------
-    public SwipeApp() {
+    //--------------------------------------------------------------------------
+    // static fields and methods
+    //--------------------------------------------------------------------------
+    private static final String SWIPE_APP_INTERFACE_OPTIONS =
+              "                     Swipe Left(L) | Super-Like(S) | Swipe Right(R)\n"
+            + "                                        Exit(X)\n\n"
+            + "                                        Enter : ";
+    private static final String MATCHED_PROMPT_FILEPATH= "data/prompt_messages/matched_prompt_message.txt";
+    private static final int SWIPE_RIGHT_MATCH_PROBABILITY = 50;
+    private static final int SUPER_LIKE_MATCH_PROBABILITY = 75;
 
+    //--------------------------------------------------------------------------
+    // constructor
+    //--------------------------------------------------------------------------
+    public SwipeApp() {
     }
 
-    // _________________________________________________________________________
-    // -------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // business methods
-    // -------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     public List<Profile> execute(List<Profile> matches) {
+        Scanner scanner = new Scanner(System.in);
         Random rand = new Random();
 
         boolean showNextProfile = true;
         while (showNextProfile) {
+            // clear the console
+            System.out.println(
+                    "\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n" +
+                    "\n\n\n\n\n\n\n\n\n\n");
+            // generate new profile to present to user
             Profile profile = new Profile();
             System.out.println(profile);
-            ValidUserInput result = promptForSwipe();
-            switch (result){
-                case SWIPE_LEFT:
-                    break;
-                case SWIPE_RIGHT:
+            // present the user their options
+            printOptionsInGreen(SWIPE_APP_INTERFACE_OPTIONS);
+
+            // delegate user input to specific actions
+            String input = scanner.nextLine().trim().toUpperCase();
+            switch (input) {
+                case "S":
                     int chanceRight = rand.nextInt(99);
-                    if (chanceRight >= 50){
+                    if (chanceRight >= 100 - SUPER_LIKE_MATCH_PROBABILITY) {
                         matches.add(profile);
+                        printFileInColor(MATCHED_PROMPT_FILEPATH);
                     }
                     break;
-                case SUPER_LIKE:
+                case "R":
                     int chanceSuper = rand.nextInt(99);
-                    if (chanceSuper >= 25) {
+                    if (chanceSuper >= SWIPE_RIGHT_MATCH_PROBABILITY) {
                         matches.add(profile);
+                        printFileInColor(MATCHED_PROMPT_FILEPATH);
                     }
                     break;
-                case EXIT:
+                case "X":
                     showNextProfile = false;
+                    break;
+                default:
                     break;
             }
         }
@@ -53,39 +78,28 @@ public class SwipeApp {
         return matches;
     }
 
-    private ValidUserInput promptForSwipe() {
-        Scanner scanner = new Scanner(System.in);
-        ValidUserInput result = null;
+    private void printOptionsInGreen(String input) {
+        Ansi ansi = new Ansi();
+        System.out.print(ansi.fgGreen().bold().a(input).reset());
+    }
 
-        boolean validInput = false;
-        while (!validInput) {
-            System.out.print("Please enter either " +
-                    ValidUserInput.SWIPE_LEFT.getInput()+ ", " +
-                    ValidUserInput.SWIPE_RIGHT.getInput() + ", " +
-                    ValidUserInput.SUPER_LIKE.getInput() + " or " +
-                    ValidUserInput.EXIT.getInput() +
-                    ": ");
+    private void printFileInColor(String file){
 
-            String input = scanner.nextLine().trim().toUpperCase();
-            switch(input) {
-                case "LEFT":
-                    result = ValidUserInput.SWIPE_LEFT;
-                    validInput = true;
-                    break;
-                case "RIGHT":
-                    result = ValidUserInput.SWIPE_RIGHT;
-                    validInput = true;
-                    break;
-                case "SUPER LIKE":
-                    result = ValidUserInput.SUPER_LIKE;
-                    validInput = true;
-                    break;
-                case "EXIT":
-                    result = ValidUserInput.EXIT;
-                    validInput = true;
-                    break;
-            }
+        String content = "";
+        try {
+            Path filePath = Path.of(file);
+            content = Files.readString(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return result;
+
+        Ansi ansi = new Ansi();
+        System.out.println(ansi.fgBrightMagenta().a(content).reset());
+
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
