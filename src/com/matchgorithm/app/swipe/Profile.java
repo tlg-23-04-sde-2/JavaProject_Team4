@@ -1,4 +1,4 @@
-package com.matchgorithm;
+package com.matchgorithm.app.swipe;
 
 import java.util.Random;
 
@@ -34,10 +34,6 @@ public class Profile {
 
     public Picture getPic() {
         return pic;
-    }
-
-    public Name getName() {
-        return name;
     }
 
     public Bio getBio() {
