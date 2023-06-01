@@ -7,40 +7,31 @@ import java.util.List;
 
 class MatchList {
     /*
-     * 1. Need to store a list of matched profiles
-     * 2. Basic functionalities:
+     * Basic functionalities:
+     *      - store a list of matched profiles
      *      - allow user to browse through the list / select the profile
      *      - enter a conversation interface once user selects the profile
      *      - allow user to exit the chat box and back to the list
      */
 
-    // Constant field
+    // constant field
     public static final int MATCHES_PER_PAGE = 10;
 
-    // Fields & properties
+    // instance variables
     private final List<Profile> matches;
 
     private int currentPage = 0;    // show 10 matches per page
+
 
     // constructor
     public MatchList(List<Profile> matches) {
         this.matches = matches;
     }
 
-    // business methods
 
-    // view method: show user options in the "Matches" interface
-    void showMatchListInterfaceOptions() {
-        Ansi ansi = new Ansi();
-        String options = "               OPTIONS\n "
-                       + "-------------------------------------\n"
-                       + "Enter id number to view profile (0-9)\n"
-                       + "   Previous page(P) | Next Page(N)\n"
-                       + "               Exit(X)\n"
-                       + "-------------------------------------\n"
-                       + "                Enter: ";
-        System.out.print(ansi.fgGreen().bold().a(options).reset());
-    }
+    /*
+     * business methods
+     */
 
     // view method: show the matches on the current page
     // TODO: can modify this to work with flipPage(), take in Argument currentPage
@@ -50,6 +41,10 @@ class MatchList {
                         matches.size() % MATCHES_PER_PAGE : 10;
 
         Ansi ansi = new Ansi();
+
+        System.out.println(ansi.fgBrightMagenta()
+                .a("*************************************************\n").reset());
+
         for (int i = 0; i < matchesShown; i++) {
             Profile profile = matches.get(i + currentPage * 10);
 
@@ -57,12 +52,28 @@ class MatchList {
                     i, profile.getName(), profile.getAge(),
                     profile.getCareer(), profile.getDistance());
         }
+
+        System.out.println(ansi.fgBrightMagenta()
+                .a("**************************************************"));
+        System.out.println("Page " + (getCurrentPage() + 1));
         showMatchListInterfaceOptions();
+    }
+
+    // view method: show user options in the "Matches" interface
+    void showMatchListInterfaceOptions() {
+        Ansi ansi = new Ansi();
+        String options = "               OPTIONS\n "
+                + "-------------------------------------\n"
+                + "Enter id number to view profile (0-9)\n"
+                + "   Previous page(P) | Next Page(N)\n"
+                + "               Exit(X)\n"
+                + "-------------------------------------\n"
+                + "                Enter: ";
+        System.out.print(ansi.fgGreen().bold().a(options).reset());
     }
 
     // model method: allow user to browse through pages of the MatchList
     // TODO: modify to work with showMatchList(), return currentPage, rename to flipToPage()
-
     void flipPage(String input) {
         Ansi ansi = new Ansi();
 

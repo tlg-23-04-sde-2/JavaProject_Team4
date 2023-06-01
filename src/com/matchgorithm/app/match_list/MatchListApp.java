@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class MatchListApp implements AppInterface {
 
-    // instance
+    // instance variables
     private final List<Profile> matches;
     private final MatchList matchList;
     private UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
@@ -22,6 +22,7 @@ public class MatchListApp implements AppInterface {
     }
 
     // business method
+
     @Override
     public void execute() {
         // calibrate userInterfaceStatus to the current one

@@ -55,8 +55,8 @@ public class MainMenuApp implements AppInterface {
         }
     }
 
-
-
+    // view method
+    // helper method to print txt file in colors
     private void printFileInColor(String file){
 
         String content = "";
