@@ -5,7 +5,7 @@ import org.fusesource.jansi.Ansi;
 
 import java.util.List;
 
-class MatchList {
+public class MatchList {
     /*
      * Basic functionalities:
      *      - store a list of matched profiles
@@ -43,7 +43,7 @@ class MatchList {
         Ansi ansi = new Ansi();
 
         System.out.println(ansi.fgBrightMagenta()
-                .a("*************************************************\n").reset());
+                .a("*********************************************************************\n").reset());
 
         for (int i = 0; i < matchesShown; i++) {
             Profile profile = matches.get(i + currentPage * 10);
@@ -54,8 +54,8 @@ class MatchList {
         }
 
         System.out.println(ansi.fgBrightMagenta()
-                .a("**************************************************"));
-        System.out.println("Page " + (getCurrentPage() + 1));
+                .a("Page " + (getCurrentPage() + 1)));
+
         showMatchListInterfaceOptions();
     }
 
