@@ -3,10 +3,9 @@ package com.matchgorithm.app;
 import com.matchgorithm.*;
 import com.matchgorithm.app.main_menu.MainMenuApp;
 import com.matchgorithm.app.match_list.MatchListApp;
-import com.matchgorithm.app.messenger.MessengerApp;
+import com.matchgorithm.app.messenger.Messenger;
 import com.matchgorithm.app.swipe.SwipeApp;
 
-import java.security.MessageDigest;
 import java.util.*;
 
 
@@ -30,7 +29,7 @@ public class MatchGorithmApp {
         MainMenuApp mainMenuApp   = new MainMenuApp();
         SwipeApp swipeApp         = new SwipeApp(matches);
         MatchListApp matchListApp = new MatchListApp(matches);
-        MessengerApp messengerApp = new MessengerApp(matches);
+        Messenger messengerApp = new Messenger(matches);
 
         // App operation logic
         while (userInterfaceStatus != UserInterfaceStatus.EXIT) {
@@ -46,10 +45,6 @@ public class MatchGorithmApp {
                 case MATCH_LIST:
                     matchListApp.execute();
                     userInterfaceStatus = matchListApp.updateUserInterfaceStatus();
-                    break;
-                case MESSENGER:
-                    messengerApp.execute();
-                    userInterfaceStatus = messengerApp.updateUserInterfaceStatus();
                     break;
             }
         }
