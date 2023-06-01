@@ -15,6 +15,16 @@ public class ProfileTest {
         Career.initializeCareerList();
     }
 
+    // test equals() method
+    // Every Profile generated should have different uniqueId
+    @Test
+    public void givenTwoProfiles_whenCompared_shouldReturnFalse() {
+        Profile p1 = new Profile();
+        Profile p2 = new Profile();
+
+        assertFalse(p1.equals(p2));
+    }
+
     // test the uniqueId assignment upon instantiation
     @Test
     public void instantiateProfile_shouldReturnUniqueId() {

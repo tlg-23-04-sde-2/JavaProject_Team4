@@ -41,7 +41,7 @@ public class MatchListTest {
     // ------------------------------------------------------------------------
 
     @Test
-    public void givenMatchList_whenFlipToPreviousPage_shouldShowFirstPageOfMatchList() {
+    public void givenMatchList_whenFlipToPreviousPage_shouldShowPreviousPageOfMatchList() {
         addProfileToMatches(15);
         matchList.flipPage("N");
 
@@ -49,7 +49,7 @@ public class MatchListTest {
     }
 
     @Test
-    public void givenMatchList_whenFlipToNextPage_shouldShowSecondPageOfMatchList() {
+    public void givenMatchList_whenFlipToNextPage_shouldShowNextPageOfMatchList() {
         addProfileToMatches(15);
         matchList.flipPage("N");
     }
@@ -70,7 +70,7 @@ public class MatchListTest {
     }
 
     // helper method
-
+    // generate new profiles to matches
     void addProfileToMatches(int number) {
         int i = 0;
         while (i < number) {

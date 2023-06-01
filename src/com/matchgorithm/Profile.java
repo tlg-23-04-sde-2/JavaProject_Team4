@@ -1,5 +1,6 @@
 package com.matchgorithm;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Profile {
@@ -55,6 +56,19 @@ public class Profile {
 
     public Name getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        Profile profile = (Profile) other;
+        return uniqueId == profile.uniqueId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uniqueId);
     }
 
     @Override
