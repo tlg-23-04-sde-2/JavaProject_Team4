@@ -27,6 +27,18 @@ public class MatchListTest {
     }
 
     // ------------------------------------------------------------------------
+    // Testing functionality of selectedMatch() method
+    // ------------------------------------------------------------------------
+
+    @Test
+    public void givenUserChoiceOfMatch_shouldReturnSelectedProfile() {
+        addProfileToMatches(15);
+
+        assertTrue(matches.get(3) == matchList.selectedMatch(3));
+    }
+
+
+    // ------------------------------------------------------------------------
     // Testing functionality of showMatchList() method
     // ------------------------------------------------------------------------
 
