@@ -34,7 +34,7 @@ class MatchList {
 
     // -------------------------------------------------------------------------
     // business methods
-// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // view method: show user options in the "Matches" interface
     void showMatchListInterfaceOptions() {
         Ansi ansi = new Ansi();

@@ -1,5 +1,6 @@
 package com.matchgorithm;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Profile {
@@ -13,6 +14,7 @@ public class Profile {
     private Career career;
     private int age;
     private int distance;
+    private int uniqueId = 0;
 
     //Constructor
     public Profile() {
@@ -25,11 +27,11 @@ public class Profile {
         distance = rand.nextInt(51);
 
         // create unique ID for each instance
-        id++;
+        uniqueId = ++id;
     }
 
-    public static int getId() {
-        return id;
+    public int getUniqueId() {
+        return uniqueId;
     }
 
     public Picture getPic() {
@@ -54,6 +56,19 @@ public class Profile {
 
     public Name getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        Profile profile = (Profile) other;
+        return uniqueId == profile.uniqueId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uniqueId);
     }
 
     @Override
