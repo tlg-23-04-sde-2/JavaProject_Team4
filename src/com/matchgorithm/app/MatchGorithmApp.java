@@ -3,7 +3,6 @@ package com.matchgorithm.app;
 import com.matchgorithm.*;
 import com.matchgorithm.app.main_menu.MainMenuApp;
 import com.matchgorithm.app.match_list.MatchListApp;
-import com.matchgorithm.app.messenger.Messenger;
 import com.matchgorithm.app.swipe.SwipeApp;
 
 import java.util.*;
@@ -27,9 +26,8 @@ public class MatchGorithmApp {
 
         // instantiate each interface app instance
         MainMenuApp mainMenuApp   = new MainMenuApp();
-        SwipeApp swipeApp         = new SwipeApp(matches);
+        SwipeApp swipeApp         = new SwipeApp(matches);  // instance class field ref point to the variable above
         MatchListApp matchListApp = new MatchListApp(matches);
-        Messenger messengerApp = new Messenger(matches);
 
         // App operation logic
         while (userInterfaceStatus != UserInterfaceStatus.EXIT) {

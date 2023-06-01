@@ -16,6 +16,16 @@ public class ProfileTest {
     }
 
     @Test
+    public void assignString() {
+        String x = "X";
+        System.out.println(x);
+        System.out.println("X".equals(x));
+        x = "Y";
+        System.out.println(x);
+        System.out.println(!"Y".equals(x));
+    }
+
+    @Test
     public void checkIdDuringInstantiation() {
         for (int i = 0; i < 10; i++) {
             System.out.println(new Profile().getId());
