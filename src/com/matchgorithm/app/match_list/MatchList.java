@@ -43,6 +43,7 @@ class MatchList {
     }
 
     // view method: show the matches on the current page
+    // TODO: can modify this to work with flipPage(), take in Argument currentPage
     void showMatchList() {
         int matchesShown =
                 currentPage == matches.size() / MATCHES_PER_PAGE ?
@@ -60,6 +61,8 @@ class MatchList {
     }
 
     // model method: allow user to browse through pages of the MatchList
+    // TODO: modify to work with showMatchList(), return currentPage, rename to flipToPage()
+
     void flipPage(String input) {
         Ansi ansi = new Ansi();
 

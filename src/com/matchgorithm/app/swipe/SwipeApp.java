@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class SwipeApp implements AppInterface {
-    // static view to present user options
+    // static fields
     private static final String swipeAppInterfaceOptions = "Swipe Left(L) | Super-Like(S) | Swipe Right\n"
             + "                   Exit(X)\n"
             + "                   Enter: ";
@@ -21,52 +21,56 @@ public class SwipeApp implements AppInterface {
     private static final int SWIPE_RIGHT_MATCH_POSSIBILITY = 50;
     private static final int SUPER_LIKE_MATCH_POSSIBILITY = 25;
 
-    // Instance variables;
+    // instance variables;
     UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.SWIPE;
     List<Profile> matches;
 
-    // Constructor
+    // constructor
     public SwipeApp(List<Profile> matches) {
         this.matches = matches;
     }
 
+
+    // business methods
+
     @Override
     public void execute() {
+        // calibrate userInterfaceStatus to the current one
+        userInterfaceStatus = UserInterfaceStatus.SWIPE;
 
-        while (userInterfaceStatus == UserInterfaceStatus.SWIPE) {
-            // Generate new bot profile to present to user
-            Profile profile = new Profile();
-            System.out.println(profile);
+        // Generate new bot profile to present to user
+        Profile profile = new Profile();
+        System.out.println(profile);
 
-            // view: Present user options
-            printOptionsInGreen(swipeAppInterfaceOptions);
+        // view: Present user options
+        printOptionsInGreen(swipeAppInterfaceOptions);
 
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine().trim().toUpperCase();
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine().trim().toUpperCase();
 
-            Random rand = new Random();
+        Random rand = new Random();
 
-            // delegate user input to specific actions
-            switch (input){
-                case "S":
-                    int chanceRight = rand.nextInt(99);
-                    if (chanceRight >= SUPER_LIKE_MATCH_POSSIBILITY){
-                        match(profile);
-                    }
-                    break;
-                case "R":
-                    int chanceSuper = rand.nextInt(99);
-                    if (chanceSuper >= SWIPE_RIGHT_MATCH_POSSIBILITY) {
-                        match(profile);
-                    }
-                    break;
-                case "X":
-                    userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
-                    break;
-            }
+        // delegate user input to specific actions
+        switch (input){
+            case "S":
+                int chanceRight = rand.nextInt(99);
+                if (chanceRight >= SUPER_LIKE_MATCH_POSSIBILITY){
+                    match(profile);
+                }
+                break;
+            case "R":
+                int chanceSuper = rand.nextInt(99);
+                if (chanceSuper >= SWIPE_RIGHT_MATCH_POSSIBILITY) {
+                    match(profile);
+                }
+                break;
+            case "X":
+                userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
+                break;
         }
     }
 
+    // model method
     // When profiles match, add matched profile to matchList,
     // and allow option to go to MessengerApp interface or continue
     private void match(Profile profile) {
@@ -81,12 +85,14 @@ public class SwipeApp implements AppInterface {
         }
     }
 
+    // view method
     // print String in green color which represents App instructions
     void printOptionsInGreen(String input) {
         Ansi ansi = new Ansi();
         System.out.print(ansi.fgGreen().bold().a(input).reset());
     }
 
+    // view method
     // print txt banner file in BrightMagenta color
     private void printFileInColor(String file){
         String content = "";

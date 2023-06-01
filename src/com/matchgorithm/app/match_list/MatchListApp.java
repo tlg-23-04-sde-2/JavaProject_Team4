@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class MatchListApp implements AppInterface {
 
     // instance
-    private List<Profile> matches;
+    private final List<Profile> matches;
     private final MatchList matchList;
     private UserInterfaceStatus userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
 
@@ -24,6 +24,9 @@ public class MatchListApp implements AppInterface {
     // business method
     @Override
     public void execute() {
+        // calibrate userInterfaceStatus to the current one
+        userInterfaceStatus = UserInterfaceStatus.MATCH_LIST;
+
         matchList.showMatchList();
 
         Scanner in = new Scanner(System.in);
@@ -51,15 +54,18 @@ public class MatchListApp implements AppInterface {
             catch (IllegalArgumentException e) {
             }
 
+            // exit to main menu
             if ("X".equals(input)) {
                 userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
             }
+            // browse pages
             matchList.flipPage(input);
         }
     }
 
     // accessor method
 
+    @Override
     public UserInterfaceStatus updateUserInterfaceStatus() {
         return this.userInterfaceStatus;
     }
