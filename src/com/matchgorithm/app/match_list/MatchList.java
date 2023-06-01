@@ -36,7 +36,7 @@ class MatchList {
                        + "-------------------------------------\n"
                        + "Enter id number to view profile (0-9)\n"
                        + "   Previous page(P) | Next Page(N)\n"
-                       + "            Main Menu(M)\n"
+                       + "               Exit(X)\n"
                        + "-------------------------------------\n"
                        + "                Enter: ";
         System.out.print(ansi.fgGreen().bold().a(options).reset());
@@ -55,14 +55,6 @@ class MatchList {
             System.out.printf("%s. %s: Age %s, %s, %s miles\n\n",
                     i, profile.getName(), profile.getAge(),
                     profile.getCareer(), profile.getDistance());
-
-            // Color highlight
-//            System.out.print(ansi.fgGreen().a(String.valueOf(i)).reset());
-//            System.out.print(". ");
-//            AnsiConsole.out().print(ansi.fgBrightCyan().a(profile.getName()).reset());
-//            System.out.println("： Age "+ profile.getAge() + ", "
-//                    + profile.getCareer() + ", "
-//                    + profile.getDistance() + " mile(s)\n");
         }
         showMatchListInterfaceOptions();
     }
@@ -104,14 +96,8 @@ class MatchList {
         return matches.get(indexOfChoice);
     }
 
-    // TODO: Need to move it to Chat Interface
-    void chat() {
-    }
-
     // accessor method
     public int getCurrentPage() {
         return currentPage;
     }
-
-
 }

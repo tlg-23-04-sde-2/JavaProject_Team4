@@ -32,54 +32,63 @@ public class SwipeApp implements AppInterface {
 
     @Override
     public void execute() {
-        operate();
-    }
 
-    private void operate() {
-        // Generate new bot profile to present to user
-        Profile profile = new Profile();
-        System.out.println(profile);
+        while (userInterfaceStatus == UserInterfaceStatus.SWIPE) {
+            // Generate new bot profile to present to user
+            Profile profile = new Profile();
+            System.out.println(profile);
 
-        // view: Present user options
-        printOptionsInGreen(swipeAppInterfaceOptions);
+            // view: Present user options
+            printOptionsInGreen(swipeAppInterfaceOptions);
 
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine().trim().toUpperCase();
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine().trim().toUpperCase();
 
-        Random rand = new Random();
+            Random rand = new Random();
 
-        // delegate user input to specific actions
-        // TODO: allow pause after matched
-        switch (input){
-            case "S":
-                int chanceRight = rand.nextInt(99);
-                if (chanceRight >= SUPER_LIKE_MATCH_POSSIBILITY){
-                    matches.add(0,profile);
-                    printFileInColor(MATCHED_PROMPT_FILEPATH);
-                }
-                break;
-            case "R":
-                int chanceSuper = rand.nextInt(99);
-                if (chanceSuper >= SWIPE_RIGHT_MATCH_POSSIBILITY) {
-                    matches.add(0, profile);
-                    printFileInColor(MATCHED_PROMPT_FILEPATH);
-                }
-                break;
-            case "X":
-                userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
-                break;
-            default:
-                break;
+            // delegate user input to specific actions
+            switch (input){
+                case "S":
+                    int chanceRight = rand.nextInt(99);
+                    if (chanceRight >= SUPER_LIKE_MATCH_POSSIBILITY){
+                        match(profile);
+                    }
+                    break;
+                case "R":
+                    int chanceSuper = rand.nextInt(99);
+                    if (chanceSuper >= SWIPE_RIGHT_MATCH_POSSIBILITY) {
+                        match(profile);
+                    }
+                    break;
+                case "X":
+                    userInterfaceStatus = UserInterfaceStatus.MAIN_MENU;
+                    break;
+            }
         }
     }
 
+    // When profiles match, add matched profile to matchList,
+    // and allow option to go to MessengerApp interface or continue
+    private void match(Profile profile) {
+        matches.add(0, profile);
+        printFileInColor(MATCHED_PROMPT_FILEPATH);
+        printOptionsInGreen("Press [M]essenger to chat or Enter to continue swiping...\n");
+
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine().trim().toUpperCase();
+        if ("M".equals(input)) {
+            userInterfaceStatus = UserInterfaceStatus.MESSENGER;
+        }
+    }
+
+    // print String in green color which represents App instructions
     void printOptionsInGreen(String input) {
         Ansi ansi = new Ansi();
         System.out.print(ansi.fgGreen().bold().a(input).reset());
     }
 
+    // print txt banner file in BrightMagenta color
     private void printFileInColor(String file){
-
         String content = "";
         try {
             Path filePath = Path.of(file);
@@ -90,11 +99,6 @@ public class SwipeApp implements AppInterface {
 
         Ansi ansi = new Ansi();
         System.out.println(ansi.fgBrightMagenta().a(content).reset());
-
-        try {
-            Thread.sleep(800);
-        } catch (InterruptedException e) {
-        }
     }
 
     // accessor methods
