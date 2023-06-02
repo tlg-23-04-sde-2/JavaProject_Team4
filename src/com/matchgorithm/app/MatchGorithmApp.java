@@ -20,6 +20,17 @@ public class MatchGorithmApp {
     private static AppInterfaceState appInterfaceState = AppInterfaceState.MAIN_MENU;
     private static final String WELCOME_BANNER_PATH = "data/prompt_messages/welcome_banner.txt";
 
+    // this matches list will be used by all component classes:
+    //  1) SwipeApp needs it to add new matches
+    //  2) MatchListApp needs it to print directory of matches and their profiles
+    //  3) MessageApp needs it to simulate conversations with matches
+    List<Profile> matches = new ArrayList<>();
+
+    // using HAS-A composition with helper class objects
+    SwipeApp swipeApp = new SwipeApp();
+    MatchListApp matchListApp = new MatchListApp(matches);
+    MessageApp messageApp = new MessageApp();
+
     //--------------------------------------------------------------------------
     // constructor
     //--------------------------------------------------------------------------
@@ -36,17 +47,6 @@ public class MatchGorithmApp {
         Picture.initializePicList();
         Career.initializeCareerList();
         MessageApp.initializeMessageList();
-
-        // this matches list will be used by all component classes:
-        //  1) SwipeApp needs it to add new matches
-        //  2) MatchListApp needs it to print directory of matches and their profiles
-        //  3) MessageApp needs it to simulate conversations with matches
-        List<Profile> matches = new ArrayList<>();
-
-        // using HAS-A composition with helper class objects
-        SwipeApp swipeApp = new SwipeApp();
-        MatchListApp matchListApp = new MatchListApp(matches);
-        MessageApp messageApp = new MessageApp();
 
         // outermost loop - controlling entire app with switchboard below
         while (appInterfaceState != AppInterfaceState.EXIT) {

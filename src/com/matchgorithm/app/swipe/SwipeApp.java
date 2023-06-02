@@ -50,28 +50,38 @@ public class SwipeApp {
             // present the user their options
             printOptionsInGreen(SWIPE_APP_INTERFACE_OPTIONS);
 
-            // delegate user input to specific actions
-            String input = scanner.nextLine().trim().toUpperCase();
-            switch (input) {
-                case "S":
-                    int chanceRight = rand.nextInt(99);
-                    if (chanceRight >= 100 - SUPER_LIKE_MATCH_PROBABILITY) {
-                        matches.add(profile);
-                        printFileInColor(MATCHED_PROMPT_FILEPATH);
-                    }
-                    break;
-                case "R":
-                    int chanceSuper = rand.nextInt(99);
-                    if (chanceSuper >= SWIPE_RIGHT_MATCH_PROBABILITY) {
-                        matches.add(profile);
-                        printFileInColor(MATCHED_PROMPT_FILEPATH);
-                    }
-                    break;
-                case "X":
-                    showNextProfile = false;
-                    break;
-                default:
-                    break;
+            boolean validInput = false;
+            while (!validInput) {
+                String input = scanner.nextLine().trim().toUpperCase();
+
+                // delegate user input to specific actions
+                switch (input) {
+                    case "S":
+                        int chanceRight = rand.nextInt(99);
+                        if (chanceRight >= 100 - SUPER_LIKE_MATCH_PROBABILITY) {
+                            matches.add(profile);
+                            printFileInColor(MATCHED_PROMPT_FILEPATH);
+                        }
+                        validInput = true;
+                        break;
+                    case "R":
+                        int chanceSuper = rand.nextInt(99);
+                        if (chanceSuper >= SWIPE_RIGHT_MATCH_PROBABILITY) {
+                            matches.add(profile);
+                            printFileInColor(MATCHED_PROMPT_FILEPATH);
+                        }
+                        validInput = true;
+                        break;
+                    case "L":
+                        validInput = true;
+                        break;
+                    case "X":
+                        showNextProfile = false;
+                        validInput = true;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
