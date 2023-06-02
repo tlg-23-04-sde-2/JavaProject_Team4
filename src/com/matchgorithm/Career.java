@@ -12,12 +12,12 @@ public class Career {
     //STATICS
     private static List<String> jobs = new ArrayList<>();
     private static List<String> companies = new ArrayList<>();
-    private static final String jobFilePath = "data/profile/jobs.txt";
-    private static final String companyFilePath = "data/profile/companies.txt";
+    private static final String JOB_FILE_PATH = "data/profile/jobs.txt";
+    private static final String COMPANY_FILE_PATH = "data/profile/companies.txt";
 
     public static void initializeCareerList() {
         try {
-            File myObj = new File(jobFilePath);
+            File myObj = new File(JOB_FILE_PATH);
             Scanner myReader = new Scanner((myObj));
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -25,11 +25,11 @@ public class Career {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Could not locate file" + jobFilePath);
+            System.out.println("Could not locate file" + JOB_FILE_PATH);
             e.printStackTrace();
         }
         try {
-            File myObj = new File(companyFilePath);
+            File myObj = new File(COMPANY_FILE_PATH);
             Scanner myReader = new Scanner((myObj));
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -37,7 +37,7 @@ public class Career {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Could not locate file" + companyFilePath);
+            System.out.println("Could not locate file" + COMPANY_FILE_PATH);
             e.printStackTrace();
         }
 
